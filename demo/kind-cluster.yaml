@@ -1,0 +1,2 @@
+# kind (Kubernetes-in-Docker) cluster for the Phase 8 portfolio demo only.
+# Fully decoupled from the training loop. See PLAN.md section 3, Phase 8.

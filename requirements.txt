@@ -1,0 +1,15 @@
+# Aegis - pinned dependencies.
+# Phase 1 (simulator/) needs only these four; they install from prebuilt
+# wheels on Python 3.13 with no compilation step.
+numpy==2.5.1
+gymnasium==1.3.0
+pettingzoo==1.26.1
+pytest==9.1.1
+
+# Phase 2 (graph/). Official Neo4j bolt driver - no APOC, no HTTP, so the same
+# code runs against the local neo4j:5-community container and AuraDB Free.
+# tests/graph/ needs a reachable database and skips itself when there is none.
+neo4j==6.2.0
+
+# Later phases add their own (torch / torch-geometric for Phase 3-4,
+# fastapi+uvicorn for Phase 6). Not installed yet.

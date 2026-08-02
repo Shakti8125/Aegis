@@ -1,0 +1,28 @@
+# Secrets — this repo carries Neo4j credentials and a Gemini API key (PLAN.md §7)
+.env
+*.local
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+
+# Model weights / training artifacts
+*.pt
+*.pth
+*.ckpt
+runs/
+wandb/
+
+# Node
+node_modules/
+dist/
+.vite/
+
+# OS / editor
+.DS_Store
+Thumbs.db
