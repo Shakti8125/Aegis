@@ -18,17 +18,3 @@ Full design and phased roadmap: [PLAN.md](PLAN.md).
 | `backend/` | 6 — FastAPI + WebSocket | main session |
 | `frontend/` | 7 — React + Vite + Tailwind dashboard | `frontend-builder` |
 | `demo/` | 8 — kind + Chaos Mesh demo (recording only) | main session |
-
-## Local dev
-
-```bash
-cp .env.example .env     # then set NEO4J_PASSWORD
-docker compose up -d     # local Neo4j at bolt://localhost:7687
-pytest tests/
-```
-
-## Status
-
-Phase 0 (scaffolding) complete. Phases 1–8 not started.
-
-<!-- TODO: architecture summary, baseline-comparison numbers, demo video link -->
