@@ -11,5 +11,11 @@ pytest==9.1.1
 # tests/graph/ needs a reachable database and skips itself when there is none.
 neo4j==6.2.0
 
-# Later phases add their own (torch / torch-geometric for Phase 3-4,
-# fastapi+uvicorn for Phase 6). Not installed yet.
+# Phases 3-4 (encoder/, marl/). CPU wheels are enough: MAPPO here trains on a
+# 12-agent, 38-float observation space, so the run is bounded by the simulator
+# rather than by matmul throughput. torch-geometric is a Phase 3 dependency;
+# marl/ imports only torch (marl/mappo.py's encoder seam keeps the GNN optional).
+torch==2.9.1
+torch-geometric==2.8.0.post1
+
+# Phase 6 adds its own (fastapi + uvicorn). Not installed yet.

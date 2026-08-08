@@ -1,2 +1,13 @@
-// Vite entrypoint.
-// Phase 7 - owned by the frontend-builder subagent. See PLAN.md section 9.
+import React from "react";
+import ReactDOM from "react-dom/client";
+import App from "./App";
+import "./index.css";
+import { WebSocketProvider } from "./context/WebSocketContext";
+
+ReactDOM.createRoot(document.getElementById("root")!).render(
+  <React.StrictMode>
+    <WebSocketProvider>
+      <App />
+    </WebSocketProvider>
+  </React.StrictMode>
+);
