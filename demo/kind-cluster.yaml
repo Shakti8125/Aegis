@@ -1,2 +1,14 @@
-# kind (Kubernetes-in-Docker) cluster for the Phase 8 portfolio demo only.
-# Fully decoupled from the training loop. See PLAN.md section 3, Phase 8.
+# kind (Kubernetes-in-Docker) cluster configuration for Aegis Phase 8 Demo
+# Decoupled from RL training; used solely for live cluster demonstration.
+
+apiVersion: kind.x-k8s.io/v1alpha4
+kind: Cluster
+name: aegis-demo-cluster
+nodes:
+  - role: control-plane
+    extraPortMappings:
+      - containerPort: 80
+        hostPort: 8080
+        protocol: TCP
+  - role: worker
+  - role: worker

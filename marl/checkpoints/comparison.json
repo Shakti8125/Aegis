@@ -1,0 +1,1184 @@
+{
+  "baseline_config": {
+    "enable_isolate": true,
+    "enable_reroute": true,
+    "enable_restart": true,
+    "enable_scale_down": true,
+    "enable_scale_up": true,
+    "isolate_cooldown": 20,
+    "isolate_error": 0.9,
+    "isolate_health": 0.25,
+    "reroute_cooldown": 8,
+    "reroute_downstream_error": 0.05,
+    "restart_cooldown": 5,
+    "restart_down_frac": 0.01,
+    "scale_down_cooldown": 15,
+    "scale_down_health": 0.97,
+    "scale_down_patience": 12,
+    "scale_down_util": 0.25,
+    "scale_up_cooldown": 4,
+    "scale_up_health": 0.0,
+    "scale_up_latency": 0.12,
+    "scale_up_node_pressure": 0.6,
+    "scale_up_util": 0.7
+  },
+  "baseline_tuning_trace": [
+    {
+      "config": {
+        "reroute_downstream_error": 0.05,
+        "scale_up_health": 0.0,
+        "scale_up_node_pressure": 0.6,
+        "scale_up_util": 0.7
+      },
+      "mean_sla_service_ticks": 25.5,
+      "mean_ttr": 44.375,
+      "recovery_rate": 1.0,
+      "score": 1.8602417836242475
+    },
+    {
+      "config": {
+        "reroute_downstream_error": 0.05,
+        "scale_up_health": 0.0,
+        "scale_up_node_pressure": 0.6,
+        "scale_up_util": 0.85
+      },
+      "mean_sla_service_ticks": 25.5,
+      "mean_ttr": 44.375,
+      "recovery_rate": 1.0,
+      "score": 1.8602417836242475
+    },
+    {
+      "config": {
+        "reroute_downstream_error": 0.15,
+        "scale_up_health": 0.0,
+        "scale_up_node_pressure": 0.6,
+        "scale_up_util": 0.7
+      },
+      "mean_sla_service_ticks": 25.5,
+      "mean_ttr": 44.375,
+      "recovery_rate": 1.0,
+      "score": 1.8602417836242475
+    },
+    {
+      "config": {
+        "reroute_downstream_error": 0.15,
+        "scale_up_health": 0.0,
+        "scale_up_node_pressure": 0.6,
+        "scale_up_util": 0.85
+      },
+      "mean_sla_service_ticks": 25.5,
+      "mean_ttr": 44.375,
+      "recovery_rate": 1.0,
+      "score": 1.8602417836242475
+    },
+    {
+      "config": {
+        "reroute_downstream_error": 0.4,
+        "scale_up_health": 0.0,
+        "scale_up_node_pressure": 0.6,
+        "scale_up_util": 0.7
+      },
+      "mean_sla_service_ticks": 30.0625,
+      "mean_ttr": 44.375,
+      "recovery_rate": 1.0,
+      "score": 2.022104311340434
+    },
+    {
+      "config": {
+        "reroute_downstream_error": 0.4,
+        "scale_up_health": 0.0,
+        "scale_up_node_pressure": 0.6,
+        "scale_up_util": 0.85
+      },
+      "mean_sla_service_ticks": 30.0625,
+      "mean_ttr": 44.375,
+      "recovery_rate": 1.0,
+      "score": 2.022104311340434
+    },
+    {
+      "config": {
+        "reroute_downstream_error": 0.05,
+        "scale_up_health": 0.0,
+        "scale_up_node_pressure": 0.75,
+        "scale_up_util": 0.7
+      },
+      "mean_sla_service_ticks": 27.4375,
+      "mean_ttr": 44.5,
+      "recovery_rate": 1.0,
+      "score": 1.931669715571498
+    },
+    {
+      "config": {
+        "reroute_downstream_error": 0.05,
+        "scale_up_health": 0.0,
+        "scale_up_node_pressure": 0.75,
+        "scale_up_util": 0.85
+      },
+      "mean_sla_service_ticks": 27.4375,
+      "mean_ttr": 44.5,
+      "recovery_rate": 1.0,
+      "score": 1.931669715571498
+    },
+    {
+      "config": {
+        "reroute_downstream_error": 0.15,
+        "scale_up_health": 0.0,
+        "scale_up_node_pressure": 0.75,
+        "scale_up_util": 0.7
+      },
+      "mean_sla_service_ticks": 27.4375,
+      "mean_ttr": 44.5,
+      "recovery_rate": 1.0,
+      "score": 1.931669715571498
+    },
+    {
+      "config": {
+        "reroute_downstream_error": 0.15,
+        "scale_up_health": 0.0,
+        "scale_up_node_pressure": 0.75,
+        "scale_up_util": 0.85
+      },
+      "mean_sla_service_ticks": 27.4375,
+      "mean_ttr": 44.5,
+      "recovery_rate": 1.0,
+      "score": 1.931669715571498
+    },
+    {
+      "config": {
+        "reroute_downstream_error": 0.4,
+        "scale_up_health": 0.0,
+        "scale_up_node_pressure": 0.75,
+        "scale_up_util": 0.7
+      },
+      "mean_sla_service_ticks": 31.3125,
+      "mean_ttr": 44.5,
+      "recovery_rate": 1.0,
+      "score": 2.0691419993852453
+    },
+    {
+      "config": {
+        "reroute_downstream_error": 0.4,
+        "scale_up_health": 0.0,
+        "scale_up_node_pressure": 0.75,
+        "scale_up_util": 0.85
+      },
+      "mean_sla_service_ticks": 31.3125,
+      "mean_ttr": 44.5,
+      "recovery_rate": 1.0,
+      "score": 2.0691419993852453
+    },
+    {
+      "config": {
+        "reroute_downstream_error": 0.05,
+        "scale_up_health": 0.0,
+        "scale_up_node_pressure": 1.1,
+        "scale_up_util": 0.7
+      },
+      "mean_sla_service_ticks": 27.4375,
+      "mean_ttr": 46.4375,
+      "recovery_rate": 1.0,
+      "score": 1.9733924611973392
+    },
+    {
+      "config": {
+        "reroute_downstream_error": 0.05,
+        "scale_up_health": 0.0,
+        "scale_up_node_pressure": 1.1,
+        "scale_up_util": 0.85
+      },
+      "mean_sla_service_ticks": 27.4375,
+      "mean_ttr": 46.4375,
+      "recovery_rate": 1.0,
+      "score": 1.9733924611973392
+    },
+    {
+      "config": {
+        "reroute_downstream_error": 0.15,
+        "scale_up_health": 0.0,
+        "scale_up_node_pressure": 1.1,
+        "scale_up_util": 0.7
+      },
+      "mean_sla_service_ticks": 27.4375,
+      "mean_ttr": 46.4375,
+      "recovery_rate": 1.0,
+      "score": 1.9733924611973392
+    },
+    {
+      "config": {
+        "reroute_downstream_error": 0.15,
+        "scale_up_health": 0.0,
+        "scale_up_node_pressure": 1.1,
+        "scale_up_util": 0.85
+      },
+      "mean_sla_service_ticks": 27.4375,
+      "mean_ttr": 46.4375,
+      "recovery_rate": 1.0,
+      "score": 1.9733924611973392
+    },
+    {
+      "config": {
+        "reroute_downstream_error": 0.4,
+        "scale_up_health": 0.0,
+        "scale_up_node_pressure": 1.1,
+        "scale_up_util": 0.7
+      },
+      "mean_sla_service_ticks": 31.3125,
+      "mean_ttr": 46.4375,
+      "recovery_rate": 1.0,
+      "score": 2.1108647450110865
+    },
+    {
+      "config": {
+        "reroute_downstream_error": 0.4,
+        "scale_up_health": 0.0,
+        "scale_up_node_pressure": 1.1,
+        "scale_up_util": 0.85
+      },
+      "mean_sla_service_ticks": 31.3125,
+      "mean_ttr": 46.4375,
+      "recovery_rate": 1.0,
+      "score": 2.1108647450110865
+    },
+    {
+      "config": {
+        "reroute_downstream_error": 0.05,
+        "scale_up_health": 0.92,
+        "scale_up_node_pressure": 0.6,
+        "scale_up_util": 0.7
+      },
+      "mean_sla_service_ticks": 26.25,
+      "mean_ttr": 46.3125,
+      "recovery_rate": 1.0,
+      "score": 1.9285720680527496
+    },
+    {
+      "config": {
+        "reroute_downstream_error": 0.05,
+        "scale_up_health": 0.92,
+        "scale_up_node_pressure": 0.6,
+        "scale_up_util": 0.85
+      },
+      "mean_sla_service_ticks": 26.25,
+      "mean_ttr": 46.3125,
+      "recovery_rate": 1.0,
+      "score": 1.9285720680527496
+    },
+    {
+      "config": {
+        "reroute_downstream_error": 0.15,
+        "scale_up_health": 0.92,
+        "scale_up_node_pressure": 0.6,
+        "scale_up_util": 0.7
+      },
+      "mean_sla_service_ticks": 26.25,
+      "mean_ttr": 46.3125,
+      "recovery_rate": 1.0,
+      "score": 1.9285720680527496
+    },
+    {
+      "config": {
+        "reroute_downstream_error": 0.15,
+        "scale_up_health": 0.92,
+        "scale_up_node_pressure": 0.6,
+        "scale_up_util": 0.85
+      },
+      "mean_sla_service_ticks": 26.25,
+      "mean_ttr": 46.3125,
+      "recovery_rate": 1.0,
+      "score": 1.9285720680527496
+    },
+    {
+      "config": {
+        "reroute_downstream_error": 0.4,
+        "scale_up_health": 0.92,
+        "scale_up_node_pressure": 0.6,
+        "scale_up_util": 0.7
+      },
+      "mean_sla_service_ticks": 30.0625,
+      "mean_ttr": 46.3125,
+      "recovery_rate": 1.0,
+      "score": 2.063827056966275
+    },
+    {
+      "config": {
+        "reroute_downstream_error": 0.4,
+        "scale_up_health": 0.92,
+        "scale_up_node_pressure": 0.6,
+        "scale_up_util": 0.85
+      },
+      "mean_sla_service_ticks": 30.0625,
+      "mean_ttr": 46.3125,
+      "recovery_rate": 1.0,
+      "score": 2.063827056966275
+    },
+    {
+      "config": {
+        "reroute_downstream_error": 0.05,
+        "scale_up_health": 0.92,
+        "scale_up_node_pressure": 0.75,
+        "scale_up_util": 0.7
+      },
+      "mean_sla_service_ticks": 28.1875,
+      "mean_ttr": 46.4375,
+      "recovery_rate": 1.0,
+      "score": 2.0
+    },
+    {
+      "config": {
+        "reroute_downstream_error": 0.05,
+        "scale_up_health": 0.92,
+        "scale_up_node_pressure": 0.75,
+        "scale_up_util": 0.85
+      },
+      "mean_sla_service_ticks": 28.1875,
+      "mean_ttr": 46.4375,
+      "recovery_rate": 1.0,
+      "score": 2.0
+    },
+    {
+      "config": {
+        "reroute_downstream_error": 0.15,
+        "scale_up_health": 0.92,
+        "scale_up_node_pressure": 0.75,
+        "scale_up_util": 0.7
+      },
+      "mean_sla_service_ticks": 28.1875,
+      "mean_ttr": 46.4375,
+      "recovery_rate": 1.0,
+      "score": 2.0
+    },
+    {
+      "config": {
+        "reroute_downstream_error": 0.15,
+        "scale_up_health": 0.92,
+        "scale_up_node_pressure": 0.75,
+        "scale_up_util": 0.85
+      },
+      "mean_sla_service_ticks": 28.1875,
+      "mean_ttr": 46.4375,
+      "recovery_rate": 1.0,
+      "score": 2.0
+    },
+    {
+      "config": {
+        "reroute_downstream_error": 0.4,
+        "scale_up_health": 0.92,
+        "scale_up_node_pressure": 0.75,
+        "scale_up_util": 0.7
+      },
+      "mean_sla_service_ticks": 31.3125,
+      "mean_ttr": 46.4375,
+      "recovery_rate": 1.0,
+      "score": 2.1108647450110865
+    },
+    {
+      "config": {
+        "reroute_downstream_error": 0.4,
+        "scale_up_health": 0.92,
+        "scale_up_node_pressure": 0.75,
+        "scale_up_util": 0.85
+      },
+      "mean_sla_service_ticks": 31.3125,
+      "mean_ttr": 46.4375,
+      "recovery_rate": 1.0,
+      "score": 2.1108647450110865
+    },
+    {
+      "config": {
+        "reroute_downstream_error": 0.05,
+        "scale_up_health": 0.92,
+        "scale_up_node_pressure": 1.1,
+        "scale_up_util": 0.7
+      },
+      "mean_sla_service_ticks": 28.1875,
+      "mean_ttr": 46.4375,
+      "recovery_rate": 1.0,
+      "score": 2.0
+    },
+    {
+      "config": {
+        "reroute_downstream_error": 0.05,
+        "scale_up_health": 0.92,
+        "scale_up_node_pressure": 1.1,
+        "scale_up_util": 0.85
+      },
+      "mean_sla_service_ticks": 28.1875,
+      "mean_ttr": 46.4375,
+      "recovery_rate": 1.0,
+      "score": 2.0
+    },
+    {
+      "config": {
+        "reroute_downstream_error": 0.15,
+        "scale_up_health": 0.92,
+        "scale_up_node_pressure": 1.1,
+        "scale_up_util": 0.7
+      },
+      "mean_sla_service_ticks": 28.1875,
+      "mean_ttr": 46.4375,
+      "recovery_rate": 1.0,
+      "score": 2.0
+    },
+    {
+      "config": {
+        "reroute_downstream_error": 0.15,
+        "scale_up_health": 0.92,
+        "scale_up_node_pressure": 1.1,
+        "scale_up_util": 0.85
+      },
+      "mean_sla_service_ticks": 28.1875,
+      "mean_ttr": 46.4375,
+      "recovery_rate": 1.0,
+      "score": 2.0
+    },
+    {
+      "config": {
+        "reroute_downstream_error": 0.4,
+        "scale_up_health": 0.92,
+        "scale_up_node_pressure": 1.1,
+        "scale_up_util": 0.7
+      },
+      "mean_sla_service_ticks": 31.3125,
+      "mean_ttr": 46.4375,
+      "recovery_rate": 1.0,
+      "score": 2.1108647450110865
+    },
+    {
+      "config": {
+        "reroute_downstream_error": 0.4,
+        "scale_up_health": 0.92,
+        "scale_up_node_pressure": 1.1,
+        "scale_up_util": 0.85
+      },
+      "mean_sla_service_ticks": 31.3125,
+      "mean_ttr": 46.4375,
+      "recovery_rate": 1.0,
+      "score": 2.1108647450110865
+    },
+    {
+      "config": {
+        "reroute_downstream_error": 0.05,
+        "scale_up_health": 0.99,
+        "scale_up_node_pressure": 0.6,
+        "scale_up_util": 0.7
+      },
+      "mean_sla_service_ticks": 28.5,
+      "mean_ttr": 46.3125,
+      "recovery_rate": 1.0,
+      "score": 2.0083946844607317
+    },
+    {
+      "config": {
+        "reroute_downstream_error": 0.05,
+        "scale_up_health": 0.99,
+        "scale_up_node_pressure": 0.6,
+        "scale_up_util": 0.85
+      },
+      "mean_sla_service_ticks": 28.5,
+      "mean_ttr": 46.3125,
+      "recovery_rate": 1.0,
+      "score": 2.0083946844607317
+    },
+    {
+      "config": {
+        "reroute_downstream_error": 0.15,
+        "scale_up_health": 0.99,
+        "scale_up_node_pressure": 0.6,
+        "scale_up_util": 0.7
+      },
+      "mean_sla_service_ticks": 28.5,
+      "mean_ttr": 46.3125,
+      "recovery_rate": 1.0,
+      "score": 2.0083946844607317
+    },
+    {
+      "config": {
+        "reroute_downstream_error": 0.15,
+        "scale_up_health": 0.99,
+        "scale_up_node_pressure": 0.6,
+        "scale_up_util": 0.85
+      },
+      "mean_sla_service_ticks": 28.5,
+      "mean_ttr": 46.3125,
+      "recovery_rate": 1.0,
+      "score": 2.0083946844607317
+    },
+    {
+      "config": {
+        "reroute_downstream_error": 0.4,
+        "scale_up_health": 0.99,
+        "scale_up_node_pressure": 0.6,
+        "scale_up_util": 0.7
+      },
+      "mean_sla_service_ticks": 30.125,
+      "mean_ttr": 46.3125,
+      "recovery_rate": 1.0,
+      "score": 2.0660443518664966
+    },
+    {
+      "config": {
+        "reroute_downstream_error": 0.4,
+        "scale_up_health": 0.99,
+        "scale_up_node_pressure": 0.6,
+        "scale_up_util": 0.85
+      },
+      "mean_sla_service_ticks": 30.125,
+      "mean_ttr": 46.3125,
+      "recovery_rate": 1.0,
+      "score": 2.0660443518664966
+    },
+    {
+      "config": {
+        "reroute_downstream_error": 0.05,
+        "scale_up_health": 0.99,
+        "scale_up_node_pressure": 0.75,
+        "scale_up_util": 0.7
+      },
+      "mean_sla_service_ticks": 28.1875,
+      "mean_ttr": 46.4375,
+      "recovery_rate": 1.0,
+      "score": 2.0
+    },
+    {
+      "config": {
+        "reroute_downstream_error": 0.05,
+        "scale_up_health": 0.99,
+        "scale_up_node_pressure": 0.75,
+        "scale_up_util": 0.85
+      },
+      "mean_sla_service_ticks": 28.1875,
+      "mean_ttr": 46.4375,
+      "recovery_rate": 1.0,
+      "score": 2.0
+    },
+    {
+      "config": {
+        "reroute_downstream_error": 0.15,
+        "scale_up_health": 0.99,
+        "scale_up_node_pressure": 0.75,
+        "scale_up_util": 0.7
+      },
+      "mean_sla_service_ticks": 28.1875,
+      "mean_ttr": 46.4375,
+      "recovery_rate": 1.0,
+      "score": 2.0
+    },
+    {
+      "config": {
+        "reroute_downstream_error": 0.15,
+        "scale_up_health": 0.99,
+        "scale_up_node_pressure": 0.75,
+        "scale_up_util": 0.85
+      },
+      "mean_sla_service_ticks": 28.1875,
+      "mean_ttr": 46.4375,
+      "recovery_rate": 1.0,
+      "score": 2.0
+    },
+    {
+      "config": {
+        "reroute_downstream_error": 0.4,
+        "scale_up_health": 0.99,
+        "scale_up_node_pressure": 0.75,
+        "scale_up_util": 0.7
+      },
+      "mean_sla_service_ticks": 31.375,
+      "mean_ttr": 46.4375,
+      "recovery_rate": 1.0,
+      "score": 2.1130820399113084
+    },
+    {
+      "config": {
+        "reroute_downstream_error": 0.4,
+        "scale_up_health": 0.99,
+        "scale_up_node_pressure": 0.75,
+        "scale_up_util": 0.85
+      },
+      "mean_sla_service_ticks": 31.375,
+      "mean_ttr": 46.4375,
+      "recovery_rate": 1.0,
+      "score": 2.1130820399113084
+    },
+    {
+      "config": {
+        "reroute_downstream_error": 0.05,
+        "scale_up_health": 0.99,
+        "scale_up_node_pressure": 1.1,
+        "scale_up_util": 0.7
+      },
+      "mean_sla_service_ticks": 28.1875,
+      "mean_ttr": 46.4375,
+      "recovery_rate": 1.0,
+      "score": 2.0
+    },
+    {
+      "config": {
+        "reroute_downstream_error": 0.05,
+        "scale_up_health": 0.99,
+        "scale_up_node_pressure": 1.1,
+        "scale_up_util": 0.85
+      },
+      "mean_sla_service_ticks": 28.1875,
+      "mean_ttr": 46.4375,
+      "recovery_rate": 1.0,
+      "score": 2.0
+    },
+    {
+      "config": {
+        "reroute_downstream_error": 0.15,
+        "scale_up_health": 0.99,
+        "scale_up_node_pressure": 1.1,
+        "scale_up_util": 0.7
+      },
+      "mean_sla_service_ticks": 28.1875,
+      "mean_ttr": 46.4375,
+      "recovery_rate": 1.0,
+      "score": 2.0
+    },
+    {
+      "config": {
+        "reroute_downstream_error": 0.15,
+        "scale_up_health": 0.99,
+        "scale_up_node_pressure": 1.1,
+        "scale_up_util": 0.85
+      },
+      "mean_sla_service_ticks": 28.1875,
+      "mean_ttr": 46.4375,
+      "recovery_rate": 1.0,
+      "score": 2.0
+    },
+    {
+      "config": {
+        "reroute_downstream_error": 0.4,
+        "scale_up_health": 0.99,
+        "scale_up_node_pressure": 1.1,
+        "scale_up_util": 0.7
+      },
+      "mean_sla_service_ticks": 31.375,
+      "mean_ttr": 46.4375,
+      "recovery_rate": 1.0,
+      "score": 2.1130820399113084
+    },
+    {
+      "config": {
+        "reroute_downstream_error": 0.4,
+        "scale_up_health": 0.99,
+        "scale_up_node_pressure": 1.1,
+        "scale_up_util": 0.85
+      },
+      "mean_sla_service_ticks": 31.375,
+      "mean_ttr": 46.4375,
+      "recovery_rate": 1.0,
+      "score": 2.1130820399113084
+    }
+  ],
+  "eval_episodes_per_scenario": 24,
+  "eval_wall_clock_s": 47.112592250000034,
+  "reports": [
+    {
+      "action_share": {
+        "isolate": 0.0,
+        "no-op": 1.0,
+        "reroute": 0.0,
+        "restart": 0.0,
+        "scale_down": 0.0,
+        "scale_up": 0.0
+      },
+      "collapse_rate": 0.0,
+      "controller": "mappo",
+      "episodes": 24,
+      "mean_episode_length": 113.75,
+      "mean_reward_components": {
+        "action_cost": 0.0,
+        "availability": -7.62579947989434,
+        "invalid_action": 0.0,
+        "latency": -9.501476198745271,
+        "sla_violation": -0.30543044792345125,
+        "terminal": 60.0
+      },
+      "mean_sla_request_ticks": 0.042420899027282154,
+      "mean_sla_service_ticks": 1.0416666666666667,
+      "mean_total_reward": 42.56729387343694,
+      "mean_ttr": 87.45833333333333,
+      "median_ttr": 88.5,
+      "recovery_rate": 1.0,
+      "scenario": "pod_crash",
+      "ttr_censored_frac": 0.0
+    },
+    {
+      "action_share": {
+        "isolate": 4.576240161083654e-05,
+        "no-op": 0.9927695405454878,
+        "reroute": 4.576240161083654e-05,
+        "restart": 0.0030203185063152112,
+        "scale_down": 0.00018304960644334616,
+        "scale_up": 0.003935566538531942
+      },
+      "collapse_rate": 0.0,
+      "controller": "baseline",
+      "episodes": 24,
+      "mean_episode_length": 75.875,
+      "mean_reward_components": {
+        "action_cost": -0.35312501279016334,
+        "availability": -0.8111153272911906,
+        "invalid_action": -0.03541666719441613,
+        "latency": -5.88230451522395,
+        "sla_violation": -0.003132981015369296,
+        "terminal": 60.0
+      },
+      "mean_sla_request_ticks": 0.0004351362634527807,
+      "mean_sla_service_ticks": 0.375,
+      "mean_total_reward": 52.91490549648491,
+      "mean_ttr": 49.583333333333336,
+      "median_ttr": 46.5,
+      "recovery_rate": 1.0,
+      "scenario": "pod_crash",
+      "ttr_censored_frac": 0.0
+    },
+    {
+      "action_share": {
+        "isolate": 0.0,
+        "no-op": 1.0,
+        "reroute": 0.0,
+        "restart": 0.0,
+        "scale_down": 0.0,
+        "scale_up": 0.0
+      },
+      "collapse_rate": 0.0,
+      "controller": "no-op",
+      "episodes": 24,
+      "mean_episode_length": 113.75,
+      "mean_reward_components": {
+        "action_cost": 0.0,
+        "availability": -7.62579947989434,
+        "invalid_action": 0.0,
+        "latency": -9.501476198745271,
+        "sla_violation": -0.30543044792345125,
+        "terminal": 60.0
+      },
+      "mean_sla_request_ticks": 0.042420899027282154,
+      "mean_sla_service_ticks": 1.0416666666666667,
+      "mean_total_reward": 42.56729387343694,
+      "mean_ttr": 87.45833333333333,
+      "median_ttr": 88.5,
+      "recovery_rate": 1.0,
+      "scenario": "pod_crash",
+      "ttr_censored_frac": 0.0
+    },
+    {
+      "action_share": {
+        "isolate": 0.0,
+        "no-op": 1.0,
+        "reroute": 0.0,
+        "restart": 0.0,
+        "scale_down": 0.0,
+        "scale_up": 0.0
+      },
+      "collapse_rate": 0.0,
+      "controller": "mappo",
+      "episodes": 24,
+      "mean_episode_length": 93.04166666666667,
+      "mean_reward_components": {
+        "action_cost": 0.0,
+        "availability": -4.52867443704281,
+        "invalid_action": 0.0,
+        "latency": -7.47757862523819,
+        "sla_violation": 0.0,
+        "terminal": 60.0
+      },
+      "mean_sla_request_ticks": 0.0,
+      "mean_sla_service_ticks": 0.0,
+      "mean_total_reward": 47.993746937719,
+      "mean_ttr": 27.541666666666668,
+      "median_ttr": 20.0,
+      "recovery_rate": 1.0,
+      "scenario": "node_spike",
+      "ttr_censored_frac": 0.0
+    },
+    {
+      "action_share": {
+        "isolate": 0.0,
+        "no-op": 0.9726078519181968,
+        "reroute": 0.0,
+        "restart": 0.0,
+        "scale_down": 0.0044782803403493054,
+        "scale_up": 0.022913867741453948
+      },
+      "collapse_rate": 0.0,
+      "controller": "baseline",
+      "episodes": 24,
+      "mean_episode_length": 93.04166666666667,
+      "mean_reward_components": {
+        "action_cost": -1.234375004346172,
+        "availability": -1.4221315675752824,
+        "invalid_action": -0.5562500106170774,
+        "latency": -6.917214629085113,
+        "sla_violation": 0.0,
+        "terminal": 60.0
+      },
+      "mean_sla_request_ticks": 0.0,
+      "mean_sla_service_ticks": 0.0,
+      "mean_total_reward": 49.87002878837635,
+      "mean_ttr": 19.25,
+      "median_ttr": 3.0,
+      "recovery_rate": 1.0,
+      "scenario": "node_spike",
+      "ttr_censored_frac": 0.0
+    },
+    {
+      "action_share": {
+        "isolate": 0.0,
+        "no-op": 1.0,
+        "reroute": 0.0,
+        "restart": 0.0,
+        "scale_down": 0.0,
+        "scale_up": 0.0
+      },
+      "collapse_rate": 0.0,
+      "controller": "no-op",
+      "episodes": 24,
+      "mean_episode_length": 93.04166666666667,
+      "mean_reward_components": {
+        "action_cost": 0.0,
+        "availability": -4.52867443704281,
+        "invalid_action": 0.0,
+        "latency": -7.47757862523819,
+        "sla_violation": 0.0,
+        "terminal": 60.0
+      },
+      "mean_sla_request_ticks": 0.0,
+      "mean_sla_service_ticks": 0.0,
+      "mean_total_reward": 47.993746937719,
+      "mean_ttr": 27.541666666666668,
+      "median_ttr": 20.0,
+      "recovery_rate": 1.0,
+      "scenario": "node_spike",
+      "ttr_censored_frac": 0.0
+    },
+    {
+      "action_share": {
+        "isolate": 0.0,
+        "no-op": 1.0,
+        "reroute": 0.0,
+        "restart": 0.0,
+        "scale_down": 0.0,
+        "scale_up": 0.0
+      },
+      "collapse_rate": 0.0,
+      "controller": "mappo",
+      "episodes": 24,
+      "mean_episode_length": 90.95833333333333,
+      "mean_reward_components": {
+        "action_cost": 0.0,
+        "availability": -1.6588809830136597,
+        "invalid_action": 0.0,
+        "latency": -7.049612898534785,
+        "sla_violation": -8.81951413086305,
+        "terminal": 60.0
+      },
+      "mean_sla_request_ticks": 1.2249324747147814,
+      "mean_sla_service_ticks": 58.041666666666664,
+      "mean_total_reward": 42.4719919875885,
+      "mean_ttr": 55.333333333333336,
+      "median_ttr": 36.0,
+      "recovery_rate": 1.0,
+      "scenario": "partition",
+      "ttr_censored_frac": 0.0
+    },
+    {
+      "action_share": {
+        "isolate": 0.0,
+        "no-op": 0.9959535806993434,
+        "reroute": 0.002748511223087494,
+        "restart": 0.0,
+        "scale_down": 0.00034356390288593677,
+        "scale_up": 0.0009543441746831578
+      },
+      "collapse_rate": 0.0,
+      "controller": "baseline",
+      "episodes": 24,
+      "mean_episode_length": 90.95833333333333,
+      "mean_reward_components": {
+        "action_cost": -0.250000008692344,
+        "availability": -1.5512517630607665,
+        "invalid_action": -0.014583333550641933,
+        "latency": -7.057624799820284,
+        "sla_violation": -7.346675473818323,
+        "terminal": 60.0
+      },
+      "mean_sla_request_ticks": 1.02037154463081,
+      "mean_sla_service_ticks": 42.916666666666664,
+      "mean_total_reward": 43.77986462105764,
+      "mean_ttr": 55.333333333333336,
+      "median_ttr": 36.0,
+      "recovery_rate": 1.0,
+      "scenario": "partition",
+      "ttr_censored_frac": 0.0
+    },
+    {
+      "action_share": {
+        "isolate": 0.0,
+        "no-op": 1.0,
+        "reroute": 0.0,
+        "restart": 0.0,
+        "scale_down": 0.0,
+        "scale_up": 0.0
+      },
+      "collapse_rate": 0.0,
+      "controller": "no-op",
+      "episodes": 24,
+      "mean_episode_length": 90.95833333333333,
+      "mean_reward_components": {
+        "action_cost": 0.0,
+        "availability": -1.6588809830136597,
+        "invalid_action": 0.0,
+        "latency": -7.049612898534785,
+        "sla_violation": -8.81951413086305,
+        "terminal": 60.0
+      },
+      "mean_sla_request_ticks": 1.2249324747147814,
+      "mean_sla_service_ticks": 58.041666666666664,
+      "mean_total_reward": 42.4719919875885,
+      "mean_ttr": 55.333333333333336,
+      "median_ttr": 36.0,
+      "recovery_rate": 1.0,
+      "scenario": "partition",
+      "ttr_censored_frac": 0.0
+    },
+    {
+      "action_share": {
+        "isolate": 0.0,
+        "no-op": 1.0,
+        "reroute": 0.0,
+        "restart": 0.0,
+        "scale_down": 0.0,
+        "scale_up": 0.0
+      },
+      "collapse_rate": 0.0,
+      "controller": "mappo",
+      "episodes": 24,
+      "mean_episode_length": 90.95833333333333,
+      "mean_reward_components": {
+        "action_cost": 0.0,
+        "availability": -1.2706823171841581,
+        "invalid_action": 0.0,
+        "latency": -10.521997953920314,
+        "sla_violation": -28.70781885710312,
+        "terminal": 60.0
+      },
+      "mean_sla_request_ticks": 3.987196846641988,
+      "mean_sla_service_ticks": 49.583333333333336,
+      "mean_total_reward": 19.499500871792407,
+      "mean_ttr": 49.0,
+      "median_ttr": 29.0,
+      "recovery_rate": 1.0,
+      "scenario": "cascading_latency",
+      "ttr_censored_frac": 0.0
+    },
+    {
+      "action_share": {
+        "isolate": 0.0,
+        "no-op": 0.9850740571079554,
+        "reroute": 0.0,
+        "restart": 0.0,
+        "scale_down": 0.0024049473202015577,
+        "scale_up": 0.01252099557184303
+      },
+      "collapse_rate": 0.0,
+      "controller": "baseline",
+      "episodes": 24,
+      "mean_episode_length": 90.95833333333333,
+      "mean_reward_components": {
+        "action_cost": -0.7475000284612179,
+        "availability": -1.2032848048681142,
+        "invalid_action": -0.23750000400468707,
+        "latency": -10.27070114746069,
+        "sla_violation": -27.613680344094366,
+        "terminal": 60.0
+      },
+      "mean_sla_request_ticks": 3.8352331178515064,
+      "mean_sla_service_ticks": 47.25,
+      "mean_total_reward": 19.927333671110926,
+      "mean_ttr": 49.0,
+      "median_ttr": 29.0,
+      "recovery_rate": 1.0,
+      "scenario": "cascading_latency",
+      "ttr_censored_frac": 0.0
+    },
+    {
+      "action_share": {
+        "isolate": 0.0,
+        "no-op": 1.0,
+        "reroute": 0.0,
+        "restart": 0.0,
+        "scale_down": 0.0,
+        "scale_up": 0.0
+      },
+      "collapse_rate": 0.0,
+      "controller": "no-op",
+      "episodes": 24,
+      "mean_episode_length": 90.95833333333333,
+      "mean_reward_components": {
+        "action_cost": 0.0,
+        "availability": -1.2706823171841581,
+        "invalid_action": 0.0,
+        "latency": -10.521997953920314,
+        "sla_violation": -28.70781885710312,
+        "terminal": 60.0
+      },
+      "mean_sla_request_ticks": 3.987196846641988,
+      "mean_sla_service_ticks": 49.583333333333336,
+      "mean_total_reward": 19.499500871792407,
+      "mean_ttr": 49.0,
+      "median_ttr": 29.0,
+      "recovery_rate": 1.0,
+      "scenario": "cascading_latency",
+      "ttr_censored_frac": 0.0
+    },
+    {
+      "action_share": {
+        "isolate": 0.0,
+        "no-op": 1.0,
+        "reroute": 0.0,
+        "restart": 0.0,
+        "scale_down": 0.0,
+        "scale_up": 0.0
+      },
+      "collapse_rate": 0.0,
+      "controller": "mappo",
+      "episodes": 24,
+      "mean_episode_length": 101.29166666666667,
+      "mean_reward_components": {
+        "action_cost": 0.0,
+        "availability": -4.0410555753358794,
+        "invalid_action": 0.0,
+        "latency": -9.062996144716939,
+        "sla_violation": -14.126064070956394,
+        "terminal": 60.0
+      },
+      "mean_sla_request_ticks": 1.9619533229173005,
+      "mean_sla_service_ticks": 24.708333333333332,
+      "mean_total_reward": 32.76988420899079,
+      "mean_ttr": 53.166666666666664,
+      "median_ttr": 56.5,
+      "recovery_rate": 1.0,
+      "scenario": "mixed",
+      "ttr_censored_frac": 0.0
+    },
+    {
+      "action_share": {
+        "isolate": 0.0,
+        "no-op": 0.9748847926267281,
+        "reroute": 0.0006528417818740399,
+        "restart": 0.0004608294930875576,
+        "scale_down": 0.004761904761904762,
+        "scale_up": 0.01923963133640553
+      },
+      "collapse_rate": 0.0,
+      "controller": "baseline",
+      "episodes": 24,
+      "mean_episode_length": 90.41666666666667,
+      "mean_reward_components": {
+        "action_cost": -1.1843750153978665,
+        "availability": -1.2542697305127224,
+        "invalid_action": -0.40208334211880964,
+        "latency": -7.5964249062041445,
+        "sla_violation": -12.000495496351505,
+        "terminal": 60.0
+      },
+      "mean_sla_request_ticks": 1.666735462523017,
+      "mean_sla_service_ticks": 19.791666666666668,
+      "mean_total_reward": 37.56235150941495,
+      "mean_ttr": 38.0,
+      "median_ttr": 29.0,
+      "recovery_rate": 1.0,
+      "scenario": "mixed",
+      "ttr_censored_frac": 0.0
+    },
+    {
+      "action_share": {
+        "isolate": 0.0,
+        "no-op": 1.0,
+        "reroute": 0.0,
+        "restart": 0.0,
+        "scale_down": 0.0,
+        "scale_up": 0.0
+      },
+      "collapse_rate": 0.0,
+      "controller": "no-op",
+      "episodes": 24,
+      "mean_episode_length": 101.29166666666667,
+      "mean_reward_components": {
+        "action_cost": 0.0,
+        "availability": -4.0410555753358794,
+        "invalid_action": 0.0,
+        "latency": -9.062996144716939,
+        "sla_violation": -14.126064070956394,
+        "terminal": 60.0
+      },
+      "mean_sla_request_ticks": 1.9619533229173005,
+      "mean_sla_service_ticks": 24.708333333333332,
+      "mean_total_reward": 32.76988420899079,
+      "mean_ttr": 53.166666666666664,
+      "median_ttr": 56.5,
+      "recovery_rate": 1.0,
+      "scenario": "mixed",
+      "ttr_censored_frac": 0.0
+    }
+  ],
+  "run_id": "colab-gpu-v1",
+  "scenarios_total": 5,
+  "scenarios_won_on_both": 0,
+  "verdicts": [
+    {
+      "beats_both": false,
+      "beats_sla": false,
+      "beats_ttr": false,
+      "scenario": "pod_crash",
+      "sla_delta": -0.6666666666666667,
+      "sla_pct": -177.7777777777778,
+      "ttr_delta": -37.87499999999999,
+      "ttr_pct": -76.38655462184872
+    },
+    {
+      "beats_both": false,
+      "beats_sla": false,
+      "beats_ttr": false,
+      "scenario": "node_spike",
+      "sla_delta": 0.0,
+      "sla_pct": 0.0,
+      "ttr_delta": -8.291666666666668,
+      "ttr_pct": -43.07359307359308
+    },
+    {
+      "beats_both": false,
+      "beats_sla": false,
+      "beats_ttr": false,
+      "scenario": "partition",
+      "sla_delta": -15.125,
+      "sla_pct": -35.24271844660194,
+      "ttr_delta": 0.0,
+      "ttr_pct": 0.0
+    },
+    {
+      "beats_both": false,
+      "beats_sla": false,
+      "beats_ttr": false,
+      "scenario": "cascading_latency",
+      "sla_delta": -2.3333333333333357,
+      "sla_pct": -4.938271604938277,
+      "ttr_delta": 0.0,
+      "ttr_pct": 0.0
+    },
+    {
+      "beats_both": false,
+      "beats_sla": false,
+      "beats_ttr": false,
+      "scenario": "mixed",
+      "sla_delta": -4.916666666666664,
+      "sla_pct": -24.84210526315788,
+      "ttr_delta": -15.166666666666664,
+      "ttr_pct": -39.91228070175438
+    }
+  ]
+}

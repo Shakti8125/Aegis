@@ -1,0 +1,16 @@
+apiVersion: chaos-mesh.org/v1alpha1
+kind: PodChaos
+metadata:
+  name: pod-failure-scenario
+  namespace: aegis-demo
+spec:
+  action: pod-failure
+  mode: one
+  duration: '60s'
+  selector:
+    namespaces:
+      - aegis-demo
+    labelSelectors:
+      'app': 'payment-service'
+  scheduler:
+    cron: '*/2 * * * *'

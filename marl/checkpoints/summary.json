@@ -1,0 +1,12 @@
+{
+  "agent_steps": 4915200,
+  "agent_steps_per_sec": 9617.565534314928,
+  "env_steps": 409600,
+  "env_steps_per_sec": 801.463794526244,
+  "final_checkpoint": "/content/Aegis/marl/checkpoints/colab-gpu-v1/final.pt",
+  "run_dir": "/content/Aegis/marl/checkpoints/colab-gpu-v1",
+  "scenarios_total": 5,
+  "scenarios_won_on_both": 0,
+  "updates_per_sec": 0.7826794868420351,
+  "wall_clock_s": 511.064882528
+}

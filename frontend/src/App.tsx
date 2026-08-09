@@ -2,6 +2,8 @@ import React from "react";
 import { Header } from "./components/Header";
 import { ClusterGraph } from "./components/ClusterGraph";
 import { NodeInspector } from "./components/NodeInspector";
+import { IncidentFeed } from "./components/IncidentFeed";
+import { MetricsPanel } from "./components/MetricsPanel";
 import { useWebSocket } from "./context/WebSocketContext";
 
 export const App: React.FC = () => {
@@ -18,23 +20,41 @@ export const App: React.FC = () => {
       {/* Top Navigation & Controls */}
       <Header />
 
-      {/* Main Hero Canvas: ClusterGraph */}
-      <main className="flex-1 relative p-4 bg-[#0B0E14]">
-        <ClusterGraph
-          cluster={cluster}
-          actions={actions}
-          selectedNodeId={selectedNodeId}
-          highlightedEdge={highlightedEdge}
-          onSelectNode={setSelectedNodeId}
-        />
+      {/* Main Content Area */}
+      <div className="flex flex-1 overflow-hidden">
+        
+        {/* Left Column: Graph + Metrics */}
+        <div className="flex flex-col flex-1 relative overflow-hidden">
+          {/* Main Hero Canvas: ClusterGraph */}
+          <main className="flex-1 relative p-4 bg-[#0B0E14]">
+            <ClusterGraph
+              cluster={cluster}
+              actions={actions}
+              selectedNodeId={selectedNodeId}
+              highlightedEdge={highlightedEdge}
+              onSelectNode={setSelectedNodeId}
+            />
 
-        {/* Selected Node Details Drawer */}
-        <NodeInspector
-          selectedNodeId={selectedNodeId}
-          cluster={cluster}
-          onClose={() => setSelectedNodeId(null)}
-        />
-      </main>
+            {/* Selected Node Details Drawer */}
+            <NodeInspector
+              selectedNodeId={selectedNodeId}
+              cluster={cluster}
+              onClose={() => setSelectedNodeId(null)}
+            />
+          </main>
+
+          {/* Bottom Metrics Panel */}
+          <div className="shrink-0">
+            <MetricsPanel />
+          </div>
+        </div>
+
+        {/* Right Column: Incident Feed */}
+        <div className="shrink-0 h-full">
+          <IncidentFeed />
+        </div>
+
+      </div>
     </div>
   );
 };
