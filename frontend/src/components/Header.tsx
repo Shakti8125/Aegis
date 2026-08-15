@@ -141,7 +141,7 @@ export const Header: React.FC = () => {
         <div className="text-right">
           <div className="text-[10px] font-mono text-[#7C89A3]">TICK</div>
           <div className="font-mono text-sm font-bold text-[#38BDF8]">
-            {cluster?.tick ?? 0}
+            {cluster ? cluster.tick : "—"}
           </div>
         </div>
 
@@ -149,14 +149,16 @@ export const Header: React.FC = () => {
           <div className="text-[10px] font-mono text-[#7C89A3]">MEAN HEALTH</div>
           <div
             className={`font-mono text-sm font-bold ${
-              (cluster?.mean_health ?? 1.0) >= 0.85
+              !cluster
+                ? "text-[#7C89A3]"
+                : cluster.mean_health >= 0.85
                 ? "text-[#3DDC97]"
-                : (cluster?.mean_health ?? 1.0) >= 0.4
+                : cluster.mean_health >= 0.4
                 ? "text-[#F5A623]"
                 : "text-[#E5484D]"
             }`}
           >
-            {((cluster?.mean_health ?? 1.0) * 100).toFixed(0)}%
+            {cluster ? `${(cluster.mean_health * 100).toFixed(0)}%` : "—"}
           </div>
         </div>
 
@@ -164,10 +166,14 @@ export const Header: React.FC = () => {
           <div className="text-[10px] font-mono text-[#7C89A3]">SLA VIOLATIONS</div>
           <div
             className={`font-mono text-sm font-bold ${
-              (cluster?.sla_violation_rate ?? 0) > 0 ? "text-[#E5484D]" : "text-[#3DDC97]"
+              !cluster
+                ? "text-[#7C89A3]"
+                : cluster.sla_violation_rate > 0
+                ? "text-[#E5484D]"
+                : "text-[#3DDC97]"
             }`}
           >
-            {((cluster?.sla_violation_rate ?? 0) * 100).toFixed(1)}%
+            {cluster ? `${(cluster.sla_violation_rate * 100).toFixed(1)}%` : "—"}
           </div>
         </div>
       </div>

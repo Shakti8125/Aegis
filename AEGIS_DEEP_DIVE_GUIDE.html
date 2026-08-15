@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aegis — First-Principles Educational Guide & Architecture Deep-Dive</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#F0FDF4',
+                            500: '#22C55E',
+                            900: '#14532D',
+                        },
+                        darkBg: '#090D16',
+                        cardBg: '#111827',
+                        accentBlue: '#38BDF8',
+                        accentPurple: '#A855F7',
+                        accentEmerald: '#34D399',
+                        accentAmber: '#FBBF24',
+                        accentRose: '#F43F5E'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['Fira Code', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #090D16;
+            color: #E2E8F0;
+            font-family: 'Inter', sans-serif;
+        }
+        .glow-emerald {
+            box-shadow: 0 0 25px -5px rgba(52, 211, 153, 0.15);
+        }
+        .glow-blue {
+            box-shadow: 0 0 25px -5px rgba(56, 189, 248, 0.15);
+        }
+        code {
+            font-family: 'Fira Code', monospace;
+        }
+        pre {
+            background-color: #030712 !important;
+            border: 1px solid #1E293B;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            overflow-x: auto;
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #38BDF8 0%, #34D399 50%, #A855F7 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+<body class="antialiased min-h-screen flex flex-col">
+
+    <!-- Header / Navbar -->
+    <header class="sticky top-0 z-50 backdrop-blur-md bg-slate-950/80 border-b border-slate-800/80">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-9 h-9 rounded-lg bg-gradient-to-tr from-cyan-500 to-emerald-400 flex items-center justify-center font-extrabold text-slate-950 text-xl shadow-lg shadow-cyan-500/20">
+                    Æ
+                </div>
+                <div>
+                    <span class="text-lg font-bold text-white tracking-tight">Aegis Deep-Dive Guide</span>
+                    <span class="ml-2 text-xs font-semibold px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">First Principles Edition</span>
+                </div>
+            </div>
+            <nav class="hidden md:flex items-center space-x-6 text-sm font-medium text-slate-400">
+                <a href="#part-1" class="hover:text-cyan-400 transition-colors">Part 1: The Problem</a>
+                <a href="#part-2" class="hover:text-cyan-400 transition-colors">Part 2: Concepts & Algos</a>
+                <a href="#part-3" class="hover:text-cyan-400 transition-colors">Part 3: Pipeline</a>
+                <a href="#part-4" class="hover:text-cyan-400 transition-colors">Part 4: Portfolio Takeaways</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 flex-grow grid grid-cols-1 lg:grid-cols-12 gap-8">
+
+        <!-- Sidebar / Table of Contents -->
+        <aside class="hidden lg:block lg:col-span-3">
+            <div class="sticky top-24 space-y-4 p-5 rounded-xl bg-slate-900/60 border border-slate-800/80 backdrop-blur-sm">
+                <h3 class="text-xs font-semibold text-slate-400 uppercase tracking-wider">On This Page</h3>
+                <nav class="space-y-2 text-sm">
+                    <a href="#part-1" class="block font-medium text-cyan-400 hover:text-cyan-300">1. Core Problem Statement</a>
+                    <div class="pl-3 space-y-1 text-xs text-slate-400">
+                        <a href="#what-is-incident" class="block hover:text-slate-200">What is an Incident?</a>
+                        <a href="#first-principles" class="block hover:text-slate-200">First Principles Breakdown</a>
+                        <a href="#why-traditional-fails" class="block hover:text-slate-200">Why Traditional Approaches Fail</a>
+                        <a href="#aegis-solution" class="block hover:text-slate-200">The Aegis Solution</a>
+                    </div>
+                    <a href="#part-2" class="block font-medium text-emerald-400 hover:text-emerald-300">2. Technologies & Algos</a>
+                    <div class="pl-3 space-y-1 text-xs text-slate-400">
+                        <a href="#k8s-basics" class="block hover:text-slate-200">Kubernetes & Microservices</a>
+                        <a href="#property-graphs" class="block hover:text-slate-200">Property Graphs & Neo4j</a>
+                        <a href="#gnn-graphsage" class="block hover:text-slate-200">GNNs & GraphSAGE</a>
+                        <a href="#marl-mappo" class="block hover:text-slate-200">MARL & MAPPO (CTDE)</a>
+                        <a href="#safety-llm" class="block hover:text-slate-200">Safety Veto & Fact LLMs</a>
+                    </div>
+                    <a href="#part-3" class="block font-medium text-purple-400 hover:text-purple-300">3. End-to-End Pipeline</a>
+                    <a href="#part-4" class="block font-medium text-amber-400 hover:text-amber-300">4. Portfolio & Learnings</a>
+                </nav>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="lg:col-span-9 space-y-12">
+
+            <!-- Hero Banner -->
+            <section class="p-8 rounded-2xl bg-gradient-to-r from-slate-900 via-slate-900/90 to-cyan-950/40 border border-slate-800 relative overflow-hidden glow-emerald">
+                <div class="absolute -right-10 -bottom-10 w-64 h-64 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none"></div>
+                <div class="absolute right-40 -top-10 w-48 h-48 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
+                
+                <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight mb-4">
+                    Aegis <span class="gradient-text">First-Principles Educational Guide</span>
+                </h1>
+                <p class="text-slate-300 text-base leading-relaxed max-w-3xl mb-6">
+                    A comprehensive, beginner-friendly deep-dive into autonomous Kubernetes cluster self-healing powered by Graph Neural Networks (GraphSAGE), Multi-Agent Reinforcement Learning (MAPPO CTDE), and Fact-Grounded Agentic LLMs.
+                </p>
+                <div class="flex flex-wrap gap-3">
+                    <span class="inline-flex items-center px-3 py-1 rounded-md text-xs font-mono bg-cyan-500/10 text-cyan-300 border border-cyan-500/20">Neo4j Property Graph</span>
+                    <span class="inline-flex items-center px-3 py-1 rounded-md text-xs font-mono bg-emerald-500/10 text-emerald-300 border border-emerald-500/20">PyTorch Geometric GraphSAGE</span>
+                    <span class="inline-flex items-center px-3 py-1 rounded-md text-xs font-mono bg-purple-500/10 text-purple-300 border border-purple-500/20">MAPPO CTDE (PettingZoo)</span>
+                    <span class="inline-flex items-center px-3 py-1 rounded-md text-xs font-mono bg-amber-500/10 text-amber-300 border border-amber-500/20">Deterministic Safety Veto</span>
+                    <span class="inline-flex items-center px-3 py-1 rounded-md text-xs font-mono bg-rose-500/10 text-rose-300 border border-rose-500/20">Grounded LLM Ops (Ollama/Gemini)</span>
+                </div>
+            </section>
+
+            <!-- PART 1 -->
+            <section id="part-1" class="space-y-6 scroll-mt-20">
+                <div class="border-b border-slate-800 pb-3 flex items-center justify-between">
+                    <h2 class="text-2xl font-bold text-white flex items-center gap-2">
+                        <span class="text-cyan-400">Part 1:</span> The Core Problem Statement
+                    </h2>
+                    <span class="text-xs font-mono text-slate-500">First Principles Formulation</span>
+                </div>
+
+                <div id="what-is-incident" class="p-6 rounded-xl bg-slate-900/60 border border-slate-800 space-y-4">
+                    <h3 class="text-lg font-semibold text-cyan-300">What is a Cloud Infrastructure Incident?</h3>
+                    <p class="text-slate-300 leading-relaxed text-sm">
+                        Imagine an online application like Amazon or Swiggy. When a user clicks <strong class="text-white">"Buy Now"</strong>, their request doesn't hit a single monolithic computer. Instead, it travels across dozens of interconnected microservice applications:
+                    </p>
+                    <div class="p-4 rounded-lg bg-slate-950 font-mono text-xs text-slate-300 border border-slate-800 overflow-x-auto">
+                        [User Mobile App] ──> [API Gateway] ──> [Order Service] ──> [Payment Service] ──> [Database]
+                                                                     │
+                                                                     └──> [Inventory Service]
+                    </div>
+                    <p class="text-slate-300 leading-relaxed text-sm">
+                        If <code class="text-rose-400">Payment Service</code> experiences a memory leak and crashes, the <code class="text-amber-400">Order Service</code> waits for a response and times out. Requests queue up in memory, causing <code class="text-amber-400">Order Service</code> to run out of RAM and crash as well. This domino effect is called a <strong class="text-rose-400">Cascading Failure</strong>.
+                    </p>
+                </div>
+
+                <div id="first-principles" class="p-6 rounded-xl bg-slate-900/60 border border-slate-800 space-y-4">
+                    <h3 class="text-lg font-semibold text-emerald-300">Deconstructing the Problem from First Principles</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                        <div class="p-4 rounded-lg bg-slate-950/80 border border-slate-800/80 space-y-2">
+                            <h4 class="font-semibold text-slate-200">1. Topological Graph Structure</h4>
+                            <p class="text-xs text-slate-400 leading-relaxed">
+                                Software applications are non-linear graphs, not flat tables. A cluster contains $N$ services, $M$ dependencies, $P$ pods, and $K$ nodes with continuous multi-variable metrics.
+                            </p>
+                        </div>
+                        <div class="p-4 rounded-lg bg-slate-950/80 border border-slate-800/80 space-y-2">
+                            <h4 class="font-semibold text-slate-200">2. Cascading Temporal Dynamics</h4>
+                            <p class="text-xs text-slate-400 leading-relaxed">
+                                Failures propagate through time and dependency channels. A crash at node $A$ at time $t$ manifests as elevated latency at node $B$ at time $t+k$.
+                            </p>
+                        </div>
+                        <div class="p-4 rounded-lg bg-slate-950/80 border border-slate-800/80 space-y-2">
+                            <h4 class="font-semibold text-slate-200">3. Partial Observability</h4>
+                            <p class="text-xs text-slate-400 leading-relaxed">
+                                Microservice instances only observe their own local ingress and egress telemetry. No single component has instant complete visibility without aggregation overhead.
+                            </p>
+                        </div>
+                        <div class="p-4 rounded-lg bg-slate-950/80 border border-slate-800/80 space-y-2">
+                            <h4 class="font-semibold text-slate-200">4. Human Cognition Bottleneck</h4>
+                            <p class="text-xs text-slate-400 leading-relaxed">
+                                Human engineers take 15–45 minutes to parse noisy log streams and query metrics during outages. Downtime costs modern enterprises over $5,000/minute.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="why-traditional-fails" class="p-6 rounded-xl bg-slate-900/60 border border-slate-800 space-y-3 text-sm">
+                    <h3 class="text-lg font-semibold text-rose-400">Why Traditional Approaches Fail</h3>
+                    <ul class="space-y-2 text-slate-300 list-disc list-inside">
+                        <li><strong class="text-slate-100">Static Threshold Alerts</strong> (e.g., <em>"Alert if CPU > 80%"</em>): Cause alert storms. 50 alerts fire at once during a cascade, obscuring the root cause.</li>
+                        <li><strong class="text-slate-100">Hardcoded Scripts</strong>: Fail when clusters autoscale dynamically or when multi-point failures occur.</li>
+                        <li><strong class="text-slate-100">Unconstrained LLM Prompts</strong>: Suffer from hallucinations and lack formal mathematical guarantees required for production control loops.</li>
+                    </ul>
+                </div>
+
+                <div id="aegis-solution" class="p-6 rounded-xl bg-gradient-to-r from-emerald-950/30 to-slate-900 border border-emerald-500/30 space-y-3">
+                    <h3 class="text-lg font-semibold text-emerald-400">The First-Principles Solution: Aegis</h3>
+                    <p class="text-slate-300 text-sm leading-relaxed">
+                        Aegis poses the fundamental question: <em>"How can an autonomous software system continuously observe a complex dynamic graph, learn optimal self-healing actions without human delay, guarantee safety, and explain its actions?"</em>
+                    </p>
+                    <div class="grid grid-cols-1 sm:grid-cols-5 gap-2 pt-2 text-center text-xs font-medium">
+                        <div class="p-2.5 rounded bg-slate-950 border border-slate-800 text-cyan-300">1. OBSERVE<br><span class="text-[10px] text-slate-400">Neo4j Graph</span></div>
+                        <div class="p-2.5 rounded bg-slate-950 border border-slate-800 text-emerald-300">2. ENCODE<br><span class="text-[10px] text-slate-400">GraphSAGE GNN</span></div>
+                        <div class="p-2.5 rounded bg-slate-950 border border-slate-800 text-purple-300">3. DECIDE<br><span class="text-[10px] text-slate-400">MAPPO CTDE</span></div>
+                        <div class="p-2.5 rounded bg-slate-950 border border-slate-800 text-amber-300">4. GUARD<br><span class="text-[10px] text-slate-400">Safety Veto</span></div>
+                        <div class="p-2.5 rounded bg-slate-950 border border-slate-800 text-rose-300">5. NARRATE<br><span class="text-[10px] text-slate-400">Fact LLM Ops</span></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- PART 2 -->
+            <section id="part-2" class="space-y-8 scroll-mt-20">
+                <div class="border-b border-slate-800 pb-3 flex items-center justify-between">
+                    <h2 class="text-2xl font-bold text-white flex items-center gap-2">
+                        <span class="text-emerald-400">Part 2:</span> Technologies & Algorithms Explained
+                    </h2>
+                    <span class="text-xs font-mono text-slate-500">Learner's Breakdown</span>
+                </div>
+
+                <!-- K8s Basics -->
+                <div id="k8s-basics" class="p-6 rounded-xl bg-slate-900/60 border border-slate-800 space-y-4">
+                    <h3 class="text-lg font-semibold text-cyan-300 flex items-center gap-2">
+                        <span>1. Infrastructure Layer: Kubernetes & Microservices</span>
+                    </h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+                        <div class="p-3.5 rounded-lg bg-slate-950 border border-slate-800">
+                            <span class="font-bold text-cyan-400">Container</span>
+                            <p class="text-slate-400 mt-1">A lightweight, isolated package containing application code and all binary dependencies so it runs predictably anywhere.</p>
+                        </div>
+                        <div class="p-3.5 rounded-lg bg-slate-950 border border-slate-800">
+                            <span class="font-bold text-cyan-400">Pod</span>
+                            <p class="text-slate-400 mt-1">The smallest execution unit in Kubernetes hosting one or more co-located containers.</p>
+                        </div>
+                        <div class="p-3.5 rounded-lg bg-slate-950 border border-slate-800">
+                            <span class="font-bold text-cyan-400">Service</span>
+                            <p class="text-slate-400 mt-1">A logical grouping of pods that exposes a single network endpoint (e.g., <code class="text-slate-300">payment-service</code>).</p>
+                        </div>
+                        <div class="p-3.5 rounded-lg bg-slate-950 border border-slate-800">
+                            <span class="font-bold text-cyan-400">PettingZoo</span>
+                            <p class="text-slate-400 mt-1">Python standard library for Multi-Agent Reinforcement Learning environments (<code class="text-slate-300">ParallelEnv</code> API).</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Property Graphs -->
+                <div id="property-graphs" class="p-6 rounded-xl bg-slate-900/60 border border-slate-800 space-y-4">
+                    <h3 class="text-lg font-semibold text-emerald-300">2. Knowledge Representation: Property Graphs & Neo4j</h3>
+                    <p class="text-slate-300 text-sm leading-relaxed">
+                        Traditional SQL databases store data in flat tables requiring expensive multi-table JOINs. A <strong class="text-white">Property Graph</strong> models infrastructure directly as entities (<code class="text-emerald-400">Nodes</code>) connected by directed relationships (<code class="text-emerald-400">Edges</code>) with dynamic metric properties:
+                    </p>
+                    <pre><code class="text-xs text-emerald-400">// Neo4j Cypher Real Ingestion Example
+MERGE (s:Service {id: $service_id})
+SET s.health = $health, s.p99_latency_ms = $latency, s.error_rate = $error_rate
+MERGE (p:Pod {id: $pod_id})-[:BELONGS_TO]->(s)</code></pre>
+                </div>
+
+                <!-- GNN & GraphSAGE -->
+                <div id="gnn-graphsage" class="p-6 rounded-xl bg-slate-900/60 border border-slate-800 space-y-4">
+                    <h3 class="text-lg font-semibold text-purple-300">3. Deep Learning on Graphs: Graph Neural Networks (GNNs) & GraphSAGE</h3>
+                    <p class="text-slate-300 text-sm leading-relaxed">
+                        Standard Deep Learning (MLPs/CNNs) expects fixed input dimensions. Because Kubernetes clusters scale dynamically, Aegis uses <strong class="text-purple-300">GraphSAGE</strong>, an inductive GNN that learns neighborhood aggregation functions:
+                    </p>
+                    <div class="p-4 rounded-lg bg-slate-950 text-center font-mono text-sm text-purple-300 border border-slate-800">
+                        $$h_v^{(k)} = \sigma \left( W \cdot \operatorname{AGGREGATE}_k \left( \{ h_u^{(k-1)}, \forall u \in \mathcal{N}(v) \} \right) \right)$$
+                    </div>
+                    <p class="text-xs text-slate-400 leading-relaxed">
+                        When a service scales from 2 to 20 pods during a flash sale, GraphSAGE immediately computes new vector embeddings without requiring neural network retraining.
+                    </p>
+                </div>
+
+                <!-- MARL & MAPPO -->
+                <div id="marl-mappo" class="p-6 rounded-xl bg-slate-900/60 border border-slate-800 space-y-4">
+                    <h3 class="text-lg font-semibold text-amber-300">4. Decision Making: Multi-Agent RL & MAPPO (CTDE)</h3>
+                    <p class="text-slate-300 text-sm leading-relaxed">
+                        In a cluster with 12 microservices, a single centralized brain leads to a massive action space ($6^{12} \approx 2.17 \times 10^9$ choices per step!). Aegis assigns a local agent to each microservice using <strong class="text-amber-300">Centralized Training with Decentralized Execution (CTDE)</strong>:
+                    </p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                        <div class="p-4 rounded-lg bg-slate-950 border border-slate-800 space-y-2">
+                            <span class="font-bold text-amber-400 uppercase tracking-wider text-[11px]">Training Phase (Centralized Critic)</span>
+                            <p class="text-slate-400">The centralized Critic network inspects the global cluster state vector $Z_{\text{global}}$ to evaluate overall system value $V(S)$.</p>
+                        </div>
+                        <div class="p-4 rounded-lg bg-slate-950 border border-slate-800 space-y-2">
+                            <span class="font-bold text-emerald-400 uppercase tracking-wider text-[11px]">Runtime Phase (Decentralized Actors)</span>
+                            <p class="text-slate-400">Each microservice Actor head inspects only its local node vector $Z_{\text{local}}$ to select actions (`RESTART`, `SCALE_UP`, `ISOLATE`) in milliseconds.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Safety & LLM -->
+                <div id="safety-llm" class="p-6 rounded-xl bg-slate-900/60 border border-slate-800 space-y-4">
+                    <h3 class="text-lg font-semibold text-rose-300">5. Safety & Explanation: Agentic LLMs & Guardrails</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                        <div class="p-4 rounded-lg bg-slate-950 border border-slate-800 space-y-2">
+                            <span class="font-bold text-rose-400">Deterministic Safety Veto</span>
+                            <p class="text-slate-400">Proposed RL actions pass through a deterministic rule supervisor before execution, blocking dangerous actions during maintenance windows.</p>
+                        </div>
+                        <div class="p-4 rounded-lg bg-slate-950 border border-slate-800 space-y-2">
+                            <span class="font-bold text-cyan-400">Fact-Grounded LLM Narrator</span>
+                            <p class="text-slate-400">Gemini/Ollama models generate natural language post-mortems strictly constrained to cite verified graph telemetry facts.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- PART 3 -->
+            <section id="part-3" class="space-y-6 scroll-mt-20">
+                <div class="border-b border-slate-800 pb-3 flex items-center justify-between">
+                    <h2 class="text-2xl font-bold text-white flex items-center gap-2">
+                        <span class="text-purple-400">Part 3:</span> End-to-End System Pipeline
+                    </h2>
+                    <span class="text-xs font-mono text-slate-500">Information Flow</span>
+                </div>
+
+                <div class="p-6 rounded-xl bg-slate-900/60 border border-slate-800 font-mono text-xs space-y-3 text-slate-300 overflow-x-auto">
+                    <div class="text-cyan-400 font-bold">[1. Cluster Telemetry] ──> [2. Neo4j Property Graph] ──> [3. PyTorch GNN GraphSAGE]</div>
+                    <div class="pl-8 text-emerald-400">│</div>
+                    <div class="pl-8 text-emerald-400">└──> [4. MAPPO Local Actor Heads] ──> [5. Deterministic Safety Supervisor]</div>
+                    <div class="pl-48 text-amber-400">│</div>
+                    <div class="pl-48 text-amber-400">├──> (Approved) ──> Execute Action on K8s / Simulator</div>
+                    <div class="pl-48 text-rose-400">└──> (Vetoed)   ──> Substitute NOOP + Log Policy Event</div>
+                    <div class="pl-8 text-slate-500">│</div>
+                    <div class="pl-8 text-slate-300">└──> [6. Grounded LLM Narrator] ──> [7. FastAPI WebSocket Engine] ──> [8. React 3D Dashboard]</div>
+                </div>
+            </section>
+
+            <!-- PART 4 -->
+            <section id="part-4" class="space-y-6 scroll-mt-20">
+                <div class="border-b border-slate-800 pb-3 flex items-center justify-between">
+                    <h2 class="text-2xl font-bold text-white flex items-center gap-2">
+                        <span class="text-amber-400">Part 4:</span> Key Portfolio Takeaways
+                    </h2>
+                    <span class="text-xs font-mono text-slate-500">Career & Interview Positioning</span>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+                    <div class="p-5 rounded-xl bg-slate-900/60 border border-slate-800 space-y-2">
+                        <h4 class="font-bold text-cyan-300 text-sm">Full-Stack AI Engineering</h4>
+                        <p class="text-slate-400 leading-relaxed">Spans graph databases, GNN embeddings, multi-agent reinforcement learning, LLM ops layer, and WebGL streaming dashboards.</p>
+                    </div>
+                    <div class="p-5 rounded-xl bg-slate-900/60 border border-slate-800 space-y-2">
+                        <h4 class="font-bold text-emerald-300 text-sm">Clean Seam Architecture</h4>
+                        <p class="text-slate-400 leading-relaxed">Strict modular boundaries (<code class="text-slate-200">simulator/</code>, <code class="text-slate-200">graph/</code>, <code class="text-slate-200">encoder/</code>, <code class="text-slate-200">marl/</code>, <code class="text-slate-200">ops_layer/</code>) enabling independent subsystem testing.</p>
+                    </div>
+                    <div class="p-5 rounded-xl bg-slate-900/60 border border-slate-800 space-y-2">
+                        <h4 class="font-bold text-purple-300 text-sm">Enterprise AI Safety</h4>
+                        <p class="text-slate-400 leading-relaxed">Demonstrates how to safely execute probabilistic RL decisions in production environments using deterministic guardrail veto layers.</p>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <footer class="border-t border-slate-800/80 bg-slate-950 py-6 text-center text-xs text-slate-500">
+        <div class="max-w-7xl mx-auto px-4">
+            Aegis Autonomous Kubernetes Self-Healing Engine — Educational First-Principles Blueprint
+        </div>
+    </footer>
+
+</body>
+</html>

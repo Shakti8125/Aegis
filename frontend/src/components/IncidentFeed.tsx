@@ -9,27 +9,39 @@ function cn(...inputs: ClassValue[]) {
 }
 
 export const IncidentFeed: React.FC = () => {
-  const { actions, cluster } = useWebSocket();
+  const { actions, cluster, status } = useWebSocket();
 
-  if (!cluster) {
-    return (
-      <div className="flex h-full flex-col bg-[#0B0E14] border-l border-[#7C89A3]/20 w-80 p-4">
-        <h2 className="text-sm font-mono uppercase text-[#7C89A3] mb-4">Incident Feed</h2>
-        <div className="flex-1 flex items-center justify-center text-[#7C89A3] text-sm font-sans">
-          Waiting for telemetry...
-        </div>
-      </div>
-    );
-  }
+  const getStatusBadge = () => {
+    switch (status) {
+      case "connected":
+        return (
+          <div className="flex items-center gap-2 text-xs font-mono text-[#3DDC97]">
+            <span className="w-2 h-2 rounded-full bg-[#3DDC97] animate-pulse"></span>
+            <span>LIVE</span>
+          </div>
+        );
+      case "connecting":
+        return (
+          <div className="flex items-center gap-2 text-xs font-mono text-[#F5A623]">
+            <span className="w-2 h-2 rounded-full bg-[#F5A623] animate-ping"></span>
+            <span>CONNECTING</span>
+          </div>
+        );
+      default:
+        return (
+          <div className="flex items-center gap-2 text-xs font-mono text-[#E5484D]">
+            <span className="w-2 h-2 rounded-full bg-[#E5484D]"></span>
+            <span>OFFLINE</span>
+          </div>
+        );
+    }
+  };
 
   return (
     <div className="flex h-full flex-col bg-[#0B0E14] border-l border-[#7C89A3]/20 w-80">
       <div className="p-4 border-b border-[#7C89A3]/20 flex items-center justify-between">
         <h2 className="text-sm font-mono uppercase tracking-wider text-[#7C89A3]">Incident Feed</h2>
-        <div className="flex items-center gap-2 text-xs font-mono">
-          <span className="w-2 h-2 rounded-full bg-[#3DDC97] animate-pulse"></span>
-          <span>LIVE</span>
-        </div>
+        {getStatusBadge()}
       </div>
 
       <div className="flex-1 overflow-y-auto p-4 space-y-4">

@@ -207,3 +207,25 @@ def make_client(backend: str | None = None, **kwargs: Any) -> LLMClient:
     if backend == "stub":
         return StubClient(**kwargs)
     raise ValueError(f"Unknown LLM backend: {backend!r}. Use 'ollama' or 'gemini'.")
+
+
+def make_auto_client() -> LLMClient | None:
+    """Build an LLMClient automatically by detecting available environment configuration.
+
+    Checks LLM_BACKEND, GEMINI_API_KEY, or Ollama availability. Returns None if no LLM is configured.
+    """
+    backend = os.environ.get("LLM_BACKEND", "").lower().strip()
+    if backend == "gemini" or (not backend and os.environ.get("GEMINI_API_KEY")):
+        try:
+            return GeminiClient()
+        except LLMError as exc:
+            logger.warning("Failed to initialize GeminiClient: %s", exc)
+    if backend == "ollama" or not backend:
+        try:
+            return OllamaClient()
+        except LLMError as exc:
+            logger.warning("Failed to initialize OllamaClient: %s", exc)
+    if backend == "stub":
+        return StubClient()
+    return None
+

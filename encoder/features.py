@@ -249,10 +249,12 @@ __all__ = [
     "RELATIONS",
     "REV_CALLS_EDGE",
     "TIER_VOCAB",
+    "build_hetero_data",
     "class_counts",
     "health_class",
     "snapshot_to_hetero_data",
 ]
+
 
 
 def health_class(health: float) -> int:
@@ -346,3 +348,6 @@ def snapshot_to_hetero_data(
 
     data.tick = int(snapshot.get("tick", 0))
     return data
+
+
+build_hetero_data = snapshot_to_hetero_data

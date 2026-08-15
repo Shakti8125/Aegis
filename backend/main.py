@@ -45,7 +45,7 @@ from backend.models import (
 )
 from backend.ws import ConnectionManager, SimulationRunner
 from marl.vec_env import SCENARIOS
-from ops_layer.llm_client import make_client
+from ops_layer.llm_client import make_auto_client, make_client
 from ops_layer.narrator import Narrator
 from ops_layer.safety_supervisor import SafetySupervisor
 
@@ -243,16 +243,32 @@ async def ws_live(ws: WebSocket) -> None:
                     _active_simulations[ws_id].cancel()
                     del _active_simulations[ws_id]
 
-                scenario = msg.get("scenario", "mixed")
-                seed = msg.get("seed", 42)
-                max_cycles = msg.get("max_cycles", 200)
-                tick_delay_ms = msg.get("tick_delay_ms", 100)
+                scenario = str(msg.get("scenario", "mixed"))
+                if scenario not in SCENARIOS:
+                    await manager.send(ws, WsFrame(
+                        type=WsFrameType.ERROR,
+                        message=f"Unknown scenario '{scenario}'. Valid options: {list(list(SCENARIOS.keys()))}",
+                    ))
+                    continue
 
-                # Build ops layer components
                 try:
-                    llm = make_client("stub", response="")
-                except Exception:
-                    llm = None
+                    seed = int(msg.get("seed", 42))
+                except (ValueError, TypeError):
+                    await manager.send(ws, WsFrame(
+                        type=WsFrameType.ERROR,
+                        message="Invalid seed value; must be an integer",
+                    ))
+                    continue
+
+                try:
+                    max_cycles = max(1, min(500, int(msg.get("max_cycles", 200))))
+                    tick_delay_ms = max(20, min(2000, int(msg.get("tick_delay_ms", 100))))
+                except (ValueError, TypeError):
+                    max_cycles = 200
+                    tick_delay_ms = 100
+
+                # Build ops layer components dynamically
+                llm = make_auto_client()
                 narrator = Narrator(llm_client=llm)
                 supervisor = SafetySupervisor()
 
@@ -265,15 +281,15 @@ async def ws_live(ws: WebSocket) -> None:
                     supervisor=supervisor,
                 )
 
-                async def _run_sim(r: SimulationRunner = runner) -> None:
+                async def _run_sim(r: SimulationRunner = runner, target_ws: WebSocket = ws) -> None:
                     try:
                         async for frame in r.run():
-                            await manager.broadcast(frame)
+                            await manager.send(target_ws, frame)
                     except asyncio.CancelledError:
                         pass
                     except Exception as exc:
                         logger.exception("Simulation error: %s", exc)
-                        await manager.broadcast(WsFrame(
+                        await manager.send(target_ws, WsFrame(
                             type=WsFrameType.ERROR,
                             message=f"Simulation error: {exc}",
                         ))

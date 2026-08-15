@@ -262,6 +262,28 @@ def _fallback_narrate(ctx: ActionContext) -> str:
     return f"Agent {ctx.agent_id} executed '{action}' on {svc.service_id}."
 
 
+def _verify_narration_grounding(text: str, context: ActionContext) -> bool:
+    """Verify that any service IDs referenced in text are present in the ActionContext."""
+    import re
+    mentioned_ids = re.findall(r"\bsvc-\d+\b", text.lower())
+    if not mentioned_ids:
+        return True
+
+    valid_ids = {context.target_service.service_id.lower()}
+    for d in context.dependencies:
+        valid_ids.add(d.target_id.lower())
+        valid_ids.add(d.source_id.lower())
+    for d in context.dependents:
+        valid_ids.add(d.target_id.lower())
+        valid_ids.add(d.source_id.lower())
+
+    for sid in mentioned_ids:
+        if sid not in valid_ids:
+            logger.warning("Narration hallucinated service ID '%s' not in ActionContext facts", sid)
+            return False
+    return True
+
+
 # ==========================================================================
 # Narrator
 # ==========================================================================
@@ -287,13 +309,15 @@ class Narrator:
                 prompt = _build_user_prompt(context)
                 text = self.llm.complete(
                     _SYSTEM_PROMPT, prompt, temperature=0.3
-                )
-                return Narration(
-                    text=text.strip(),
-                    context=context,
-                    model=self.llm.model_name,
-                    grounded=True,
-                )
+                ).strip()
+                if _verify_narration_grounding(text, context):
+                    return Narration(
+                        text=text,
+                        context=context,
+                        model=self.llm.model_name,
+                        grounded=True,
+                    )
+                logger.warning("Unverified LLM narration failed fact check, using template fallback")
             except LLMError as exc:
                 logger.warning("LLM narration failed, falling back: %s", exc)
 

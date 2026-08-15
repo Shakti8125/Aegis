@@ -297,10 +297,12 @@ class SafetySupervisor:
         policies: list[Policy] | None = None,
         llm_client: LLMClient | None = None,
         llm_policies: list[str] | None = None,
+        on_llm_failure: str = "allow",
     ) -> None:
         self.policies = policies if policies is not None else list(DEFAULT_POLICIES)
         self.llm = llm_client
         self.llm_policies = llm_policies or []
+        self.on_llm_failure = on_llm_failure.lower().strip()
         self._veto_log: list[VetoResult] = []
         self._check_count = 0
 
@@ -395,5 +397,12 @@ class SafetySupervisor:
 
             return None  # ALLOW — no veto
         except LLMError as exc:
-            logger.warning("LLM safety check failed, defaulting to ALLOW: %s", exc)
+            logger.warning("LLM safety check failed: %s (on_llm_failure=%s)", exc, self.on_llm_failure)
+            if self.on_llm_failure in ("veto", "no_op"):
+                return VetoResult(
+                    decision=VetoDecision.VETO,
+                    policy_name="llm_failure_safety",
+                    reason=f"Action blocked by safety policy due to LLM error: {exc}",
+                    context=context,
+                )
             return None

@@ -129,7 +129,10 @@ class ActionEvent(BaseModel):
     was_vetoed: bool = False
     veto_reason: str = ""
     veto_policy: str = ""
+    cited_edge_source: str | None = None
+    cited_edge_target: str | None = None
     reward_components: dict[str, float] = Field(default_factory=dict)
+
 
 
 # ==========================================================================

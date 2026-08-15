@@ -78,7 +78,7 @@ const MOCK_CLUSTER: ClusterSnapshot = {
 
 export const WebSocketProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [status, setStatus] = useState<WebSocketContextType["status"]>("connecting");
-  const [cluster, setCluster] = useState<ClusterSnapshot | null>(MOCK_CLUSTER);
+  const [cluster, setCluster] = useState<ClusterSnapshot | null>(null);
   const [history, setHistory] = useState<SimulationHistoryPoint[]>([]);
   const [actions, setActions] = useState<ActionEvent[]>([]);
   const [summary, setSummary] = useState<EpisodeSummary | null>(null);
@@ -89,14 +89,24 @@ export const WebSocketProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
   const [highlightedEdge, setHighlightedEdge] = useState<{ source: string; target: string } | null>(null);
 
+  const clusterRef = useRef<ClusterSnapshot | null>(cluster);
+  useEffect(() => {
+    clusterRef.current = cluster;
+  }, [cluster]);
+
   const wsRef = useRef<WebSocket | null>(null);
+  const reconnectDelayRef = useRef(1000);
+  const reconnectTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const connect = useCallback(() => {
-    const wsUrl = `ws://${window.location.hostname}:8000/ws/live`;
+    const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
+    const host = window.location.host || "127.0.0.1:8000";
+    const wsUrl = import.meta.env.VITE_WS_URL || `${protocol}//${host}/ws/live`;
     const socket = new WebSocket(wsUrl);
 
     socket.onopen = () => {
       setStatus("connected");
+      reconnectDelayRef.current = 1000;
     };
 
     socket.onmessage = (event) => {
@@ -118,12 +128,17 @@ export const WebSocketProvider: React.FC<{ children: React.ReactNode }> = ({ chi
             setActions((prev) => [...frame.actions!, ...prev].slice(0, 100));
             // Edge trace animation for narrated dependencies
             const lastAction = frame.actions[0];
-            if (lastAction && lastAction.target_service) {
-              const src = lastAction.target_service;
-              const edgeMatch = cluster?.edges.find((e) => e.source === src || e.target === src);
-              if (edgeMatch) {
-                setHighlightedEdge({ source: edgeMatch.source, target: edgeMatch.target });
+            if (lastAction) {
+              if (lastAction.cited_edge_source && lastAction.cited_edge_target) {
+                setHighlightedEdge({ source: lastAction.cited_edge_source, target: lastAction.cited_edge_target });
                 setTimeout(() => setHighlightedEdge(null), 1800);
+              } else if (lastAction.target_service) {
+                const src = lastAction.target_service;
+                const edgeMatch = clusterRef.current?.edges.find((e) => e.source === src || e.target === src);
+                if (edgeMatch) {
+                  setHighlightedEdge({ source: edgeMatch.source, target: edgeMatch.target });
+                  setTimeout(() => setHighlightedEdge(null), 1800);
+                }
               }
             }
           }
@@ -143,16 +158,20 @@ export const WebSocketProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     socket.onclose = () => {
       setStatus("disconnected");
       setIsPlaying(false);
-      // Auto-reconnect after 3s
-      setTimeout(connect, 3000);
+      // Auto-reconnect with exponential backoff up to 30s
+      if (reconnectTimeoutRef.current) clearTimeout(reconnectTimeoutRef.current);
+      const delay = reconnectDelayRef.current;
+      reconnectDelayRef.current = Math.min(delay * 2, 30000);
+      reconnectTimeoutRef.current = setTimeout(connect, delay);
     };
 
     wsRef.current = socket;
-  }, [cluster?.edges]);
+  }, []);
 
   useEffect(() => {
     connect();
     return () => {
+      if (reconnectTimeoutRef.current) clearTimeout(reconnectTimeoutRef.current);
       if (wsRef.current) wsRef.current.close();
     };
   }, [connect]);
