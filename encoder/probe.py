@@ -534,8 +534,8 @@ def _split_report(
 
 def run_probe(
     config: ProbeConfig = ProbeConfig(), *, verbose: bool = True
-) -> ProbeReport:
-    """Pretrain, freeze, probe, score. Returns the report; never raises on failure."""
+) -> tuple[AegisGraphEncoder, ProbeReport]:
+    """Pretrain, freeze, probe, score. Returns the encoder and report; never raises on failure."""
     started = time.perf_counter()
 
     def say(message: str) -> None:
@@ -617,7 +617,7 @@ def run_probe(
         ),
     }
 
-    return ProbeReport(
+    report = ProbeReport(
         train_sizes=tuple(s.label for s in config.train_sizes),
         heldout_sizes=tuple(s.label for s in config.heldout_sizes),
         splits=splits,
@@ -628,6 +628,7 @@ def run_probe(
         seconds=time.perf_counter() - started,
         pretrain_seconds=pretrain_report.seconds,
     )
+    return encoder, report
 
 
 # ---------------------------------------------------------------------------
@@ -741,7 +742,7 @@ def main(argv: Sequence[str] | None = None) -> int:
             config, seed=args.seed, pretrain=replace(config.pretrain, seed=args.seed)
         )
 
-    report = run_probe(config, verbose=not args.quiet)
+    encoder, report = run_probe(config, verbose=not args.quiet)
     print(format_report(report))
     return 0 if report.passed else 1
 

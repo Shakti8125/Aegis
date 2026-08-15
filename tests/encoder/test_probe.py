@@ -36,7 +36,8 @@ from encoder.probe import (  # noqa: E402
 @pytest.fixture(scope="module")
 def quick_report():
     """The real pipeline at a smaller scale - same code path as the CLI gate."""
-    return run_probe(ProbeConfig.quick(), verbose=False)
+    encoder, report = run_probe(ProbeConfig.quick(), verbose=False)
+    return report
 
 
 # ------------------------------------------------------------------- metrics
