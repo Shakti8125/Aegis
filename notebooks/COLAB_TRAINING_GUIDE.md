@@ -27,7 +27,7 @@ The workspace directory will be initialized at `/content/Aegis`, with persistent
 The notebook automatically installs all required dependencies:
 
 ```bash
-pip install -q gymnasium pettingzoo pytest torch-geometric torch-scatter torch-sparse transformers
+pip install -q gymnasium pettingzoo pytest torch-geometric transformers
 ```
 
 ---
