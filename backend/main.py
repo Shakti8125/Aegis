@@ -42,7 +42,9 @@ from backend.models import (
     TrainingRun,
     WsFrame,
     WsFrameType,
+    WsStartCommand,
 )
+from pydantic import ValidationError
 from backend.ws import ConnectionManager, SimulationRunner
 from marl.vec_env import SCENARIOS
 from ops_layer.llm_client import make_auto_client, make_client
@@ -243,7 +245,16 @@ async def ws_live(ws: WebSocket) -> None:
                     _active_simulations[ws_id].cancel()
                     del _active_simulations[ws_id]
 
-                scenario = str(msg.get("scenario", "mixed"))
+                try:
+                    cmd_data = WsStartCommand(**msg)
+                except ValidationError as e:
+                    await manager.send(ws, WsFrame(
+                        type=WsFrameType.ERROR,
+                        message=f"Validation error: {e}",
+                    ))
+                    continue
+
+                scenario = cmd_data.scenario
                 if scenario not in SCENARIOS:
                     await manager.send(ws, WsFrame(
                         type=WsFrameType.ERROR,
@@ -251,21 +262,9 @@ async def ws_live(ws: WebSocket) -> None:
                     ))
                     continue
 
-                try:
-                    seed = int(msg.get("seed", 42))
-                except (ValueError, TypeError):
-                    await manager.send(ws, WsFrame(
-                        type=WsFrameType.ERROR,
-                        message="Invalid seed value; must be an integer",
-                    ))
-                    continue
-
-                try:
-                    max_cycles = max(1, min(500, int(msg.get("max_cycles", 200))))
-                    tick_delay_ms = max(20, min(2000, int(msg.get("tick_delay_ms", 100))))
-                except (ValueError, TypeError):
-                    max_cycles = 200
-                    tick_delay_ms = 100
+                seed = cmd_data.seed
+                max_cycles = cmd_data.max_cycles
+                tick_delay_ms = cmd_data.tick_delay_ms
 
                 # Build ops layer components dynamically
                 llm = make_auto_client()

@@ -23,8 +23,8 @@ export const NodeInspector: React.FC<NodeInspectorProps> = ({
 
   const getHealthBadge = (health: number) => {
     if (health >= 0.85) return <span className="px-2 py-0.5 rounded text-[11px] font-mono bg-[#3DDC97]/20 text-[#3DDC97] border border-[#3DDC97]/40">Healthy</span>;
-    if (health >= 0.40) return <span className="px-2 py-0.5 rounded text-[11px] font-mono bg-[#F5A623]/20 text-[#F5A623] border border-[#F5A623]/40">Degraded</span>;
-    return <span className="px-2 py-0.5 rounded text-[11px] font-mono bg-[#E5484D]/20 text-[#E5484D] border border-[#E5484D]/40">Critical</span>;
+    if (health >= 0.40) return <span className="px-2 py-0.5 rounded text-[11px] font-mono bg-[#F5A623]/20 text-[#F5A623] border border-dashed border-[#F5A623]/40">Degraded</span>;
+    return <span className="px-2 py-0.5 rounded text-[11px] font-mono bg-[#E5484D]/20 text-[#E5484D] border border-dotted border-[#E5484D]/40">Critical</span>;
   };
 
   return (

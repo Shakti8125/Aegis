@@ -15,7 +15,34 @@ from __future__ import annotations
 from enum import Enum
 from typing import Any
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
+
+
+# ==========================================================================
+# WebSocket commands
+# ==========================================================================
+class WsStartCommand(BaseModel):
+    command: str
+    scenario: str = "mixed"
+    seed: int = 42
+    max_cycles: int = 200
+    tick_delay_ms: int = 100
+
+    @field_validator("max_cycles", mode="before")
+    @classmethod
+    def clamp_max_cycles(cls, v: Any) -> int:
+        try:
+            return max(1, min(500, int(v)))
+        except (ValueError, TypeError):
+            return 200
+
+    @field_validator("tick_delay_ms", mode="before")
+    @classmethod
+    def clamp_tick_delay(cls, v: Any) -> int:
+        try:
+            return max(20, min(2000, int(v)))
+        except (ValueError, TypeError):
+            return 100
 
 
 # ==========================================================================

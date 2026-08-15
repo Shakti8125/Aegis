@@ -316,14 +316,6 @@ class SimulationRunner:
 
                 narration = self.narrator.narrate(ctx)
 
-                cited_src = None
-                cited_dst = None
-                all_edges = ctx.dependencies + ctx.dependents
-                if all_edges:
-                    worst_edge = max(all_edges, key=lambda e: (e.error_rate or 0.0, e.p99_latency_ms or 0.0))
-                    cited_src = worst_edge.source_id
-                    cited_dst = worst_edge.target_id
-
                 action_events.append(ActionEvent(
                     tick=self.env.t + 1,
                     agent_id=agent_name,
@@ -333,8 +325,8 @@ class SimulationRunner:
                     was_vetoed=veto_result.vetoed,
                     veto_reason=veto_result.reason if veto_result.vetoed else "",
                     veto_policy=veto_result.policy_name if veto_result.vetoed else "",
-                    cited_edge_source=cited_src,
-                    cited_edge_target=cited_dst,
+                    cited_edge_source=narration.cited_edge_source,
+                    cited_edge_target=narration.cited_edge_target,
                 ))
 
             # 3. Step the environment with final (possibly vetoed) actions

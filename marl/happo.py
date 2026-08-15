@@ -96,8 +96,9 @@ class HAPPO(nn.Module):
         """Sample actions and compute values for all agents."""
         self.eval()
         with torch.no_grad():
-            obs_t = torch.as_tensor(obs, dtype=torch.float32)
-            state_t = torch.as_tensor(state, dtype=torch.float32)
+            device = next(self.actor.parameters()).device
+            obs_t = torch.as_tensor(obs, dtype=torch.float32, device=device)
+            state_t = torch.as_tensor(state, dtype=torch.float32, device=device)
 
             act_feats = self.encoder.actor_features(obs_t)
             logits = self.actor(act_feats)
@@ -148,12 +149,13 @@ class HAPPO(nn.Module):
         actions_data = getattr(rollout_buffer, "actions", getattr(rollout_buffer, "action", None))
         logprobs_data = getattr(rollout_buffer, "logprobs", getattr(rollout_buffer, "logprob", None))
 
-        obs_t = torch.as_tensor(rollout_buffer.obs, dtype=torch.float32)
-        state_t = torch.as_tensor(states_data, dtype=torch.float32)
-        actions_t = torch.as_tensor(actions_data, dtype=torch.long)
-        old_logprobs_t = torch.as_tensor(logprobs_data, dtype=torch.float32)
-        advantages_t = torch.as_tensor(advantages, dtype=torch.float32)
-        returns_t = torch.as_tensor(returns, dtype=torch.float32)
+        device = next(self.actor.parameters()).device
+        obs_t = torch.as_tensor(rollout_buffer.obs, dtype=torch.float32, device=device)
+        state_t = torch.as_tensor(states_data, dtype=torch.float32, device=device)
+        actions_t = torch.as_tensor(actions_data, dtype=torch.long, device=device)
+        old_logprobs_t = torch.as_tensor(logprobs_data, dtype=torch.float32, device=device)
+        advantages_t = torch.as_tensor(advantages, dtype=torch.float32, device=device)
+        returns_t = torch.as_tensor(returns, dtype=torch.float32, device=device)
 
         if cfg.norm_adv:
             advantages_t = (advantages_t - advantages_t.mean()) / (advantages_t.std() + 1e-8)

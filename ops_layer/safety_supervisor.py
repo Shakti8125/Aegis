@@ -297,7 +297,7 @@ class SafetySupervisor:
         policies: list[Policy] | None = None,
         llm_client: LLMClient | None = None,
         llm_policies: list[str] | None = None,
-        on_llm_failure: str = "allow",
+        on_llm_failure: str = "no_op",
     ) -> None:
         self.policies = policies if policies is not None else list(DEFAULT_POLICIES)
         self.llm = llm_client

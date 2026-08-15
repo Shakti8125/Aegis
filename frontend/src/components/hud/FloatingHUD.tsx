@@ -114,38 +114,40 @@ export const FloatingHUD: React.FC<FloatingHUDProps> = ({
       </div>
 
       {/* Cluster Health Metrics */}
-      <div className="hidden lg:flex items-center space-x-6">
-        {/* Mean Health Indicator */}
-        <div className="flex items-center space-x-2">
-          <Activity className="w-4 h-4 text-emerald-400" />
-          <div className="flex flex-col">
-            <span className="text-[10px] text-slate-400 uppercase tracking-wider">Cluster Health</span>
-            <div className="flex items-center space-x-2">
-              <div className="w-24 h-2 bg-slate-800 rounded-full overflow-hidden">
-                <div
-                  className={`h-full transition-all duration-300 ${
-                    meanHealth > 80 ? "bg-emerald-500" : meanHealth > 50 ? "bg-amber-500" : "bg-rose-500"
-                  }`}
-                  style={{ width: `${meanHealth}%` }}
-                />
+      {status === "connected" && (
+        <div className="hidden lg:flex items-center space-x-6">
+          {/* Mean Health Indicator */}
+          <div className="flex items-center space-x-2">
+            <Activity className="w-4 h-4 text-emerald-400" />
+            <div className="flex flex-col">
+              <span className="text-[10px] text-slate-400 uppercase tracking-wider">Cluster Health</span>
+              <div className="flex items-center space-x-2">
+                <div className="w-24 h-2 bg-slate-800 rounded-full overflow-hidden">
+                  <div
+                    className={`h-full transition-all duration-300 ${
+                      meanHealth > 80 ? "bg-emerald-500" : meanHealth > 50 ? "bg-amber-500" : "bg-rose-500"
+                    }`}
+                    style={{ width: `${meanHealth}%` }}
+                  />
+                </div>
+                <span className="font-mono text-xs font-bold text-slate-200">{meanHealth}%</span>
               </div>
-              <span className="font-mono text-xs font-bold text-slate-200">{meanHealth}%</span>
             </div>
           </div>
-        </div>
 
-        {/* SLA Violation Rate */}
-        <div className="flex flex-col">
-          <span className="text-[10px] text-slate-400 uppercase tracking-wider">SLA Violation Rate</span>
-          <span
-            className={`font-mono text-xs font-bold ${
-              slaViolationPct > 15 ? "text-rose-400" : slaViolationPct > 0 ? "text-amber-400" : "text-emerald-400"
-            }`}
-          >
-            {slaViolationPct}%
-          </span>
+          {/* SLA Violation Rate */}
+          <div className="flex flex-col">
+            <span className="text-[10px] text-slate-400 uppercase tracking-wider">SLA Violation Rate</span>
+            <span
+              className={`font-mono text-xs font-bold ${
+                slaViolationPct > 15 ? "text-rose-400" : slaViolationPct > 0 ? "text-amber-400" : "text-emerald-400"
+              }`}
+            >
+              {slaViolationPct}%
+            </span>
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Action Controls & Toggles */}
       <div className="flex items-center space-x-2">

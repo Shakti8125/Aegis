@@ -162,7 +162,7 @@ class TestFallbackNarration:
 # ==========================================================================
 class TestNarrator:
     def test_llm_narration(self):
-        stub = StubClient(response="Pod restart triggered due to high latency (312ms).")
+        stub = StubClient(response='{"text": "Pod restart triggered due to high latency (312ms).", "cited_facts": ["high latency (312ms)"]}')
         narrator = Narrator(llm_client=stub)
         narration = narrator.narrate(_make_context())
         assert "312" in narration.text

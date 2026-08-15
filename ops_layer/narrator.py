@@ -111,6 +111,8 @@ class Narration:
     context: ActionContext
     model: str = ""
     grounded: bool = True  # False if the LLM call failed and we fell back
+    cited_edge_source: str | None = None
+    cited_edge_target: str | None = None
 
     def as_dict(self) -> dict[str, Any]:
         return {
@@ -123,6 +125,8 @@ class Narration:
             "grounded": self.grounded,
             "was_vetoed": self.context.was_vetoed,
             "veto_reason": self.context.veto_reason,
+            "cited_edge_source": self.cited_edge_source,
+            "cited_edge_target": self.cited_edge_target,
         }
 
 
@@ -144,6 +148,14 @@ RULES — these are non-negotiable:
 4. If an action was vetoed by the safety supervisor, explain the veto \
    reason — do not explain why the action would have been correct.
 5. Keep it under 50 words. Prefer active voice.
+
+Output ONLY valid JSON in the following format (do NOT wrap in markdown):
+{
+  "text": "<the narration text>",
+  "cited_facts": ["<list of service IDs you cited, e.g. svc-01>"],
+  "cited_edge_source": "<source service ID of the primary causal edge cited, or null>",
+  "cited_edge_target": "<target service ID of the primary causal edge cited, or null>"
+}
 """
 
 
@@ -262,10 +274,14 @@ def _fallback_narrate(ctx: ActionContext) -> str:
     return f"Agent {ctx.agent_id} executed '{action}' on {svc.service_id}."
 
 
-def _verify_narration_grounding(text: str, context: ActionContext) -> bool:
-    """Verify that any service IDs referenced in text are present in the ActionContext."""
+def _verify_narration_grounding(cited_facts: list[str], text: str, context: ActionContext) -> bool:
+    """Verify that any service IDs referenced in text or cited_facts are present in the ActionContext."""
     import re
-    mentioned_ids = re.findall(r"\bsvc-\d+\b", text.lower())
+    mentioned_ids = set(re.findall(r"\bsvc-\d+\b", text.lower()))
+    for f in cited_facts:
+        if isinstance(f, str) and f.lower().startswith("svc-"):
+            mentioned_ids.add(f.lower())
+
     if not mentioned_ids:
         return True
 
@@ -304,22 +320,50 @@ class Narrator:
         """Produce a narration for a single agent action."""
         self._narration_count += 1
 
+        cited_src = None
+        cited_dst = None
+        all_edges = context.dependencies + context.dependents
+        if all_edges:
+            worst_edge = max(all_edges, key=lambda e: (e.error_rate or 0.0, e.p99_latency_ms or 0.0))
+            cited_src = worst_edge.source_id
+            cited_dst = worst_edge.target_id
+
         if self.llm is not None:
             try:
                 prompt = _build_user_prompt(context)
                 text = self.llm.complete(
                     _SYSTEM_PROMPT, prompt, temperature=0.3
                 ).strip()
-                if _verify_narration_grounding(text, context):
+                import json
+                
+                raw_text = text
+                if raw_text.startswith("```json"):
+                    raw_text = raw_text[7:-3].strip()
+                elif raw_text.startswith("```"):
+                    raw_text = raw_text[3:-3].strip()
+                    
+                parsed = json.loads(raw_text)
+                narration_text = parsed.get("text", "")
+                cited_facts = parsed.get("cited_facts", [])
+                
+                llm_src = parsed.get("cited_edge_source")
+                llm_dst = parsed.get("cited_edge_target")
+                if llm_src and llm_dst:
+                    cited_src = llm_src
+                    cited_dst = llm_dst
+
+                if _verify_narration_grounding(cited_facts, narration_text, context):
                     return Narration(
-                        text=text,
+                        text=narration_text,
                         context=context,
                         model=self.llm.model_name,
                         grounded=True,
+                        cited_edge_source=cited_src,
+                        cited_edge_target=cited_dst,
                     )
                 logger.warning("Unverified LLM narration failed fact check, using template fallback")
-            except LLMError as exc:
-                logger.warning("LLM narration failed, falling back: %s", exc)
+            except Exception as exc:
+                logger.warning("LLM narration failed: %s, falling back", exc)
 
         self._fallback_count += 1
         return Narration(
@@ -327,6 +371,8 @@ class Narrator:
             context=context,
             model="fallback/template",
             grounded=True,
+            cited_edge_source=cited_src,
+            cited_edge_target=cited_dst,
         )
 
     def narrate_batch(

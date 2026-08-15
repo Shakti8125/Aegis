@@ -41,7 +41,7 @@ class KubectlAdapter:
         dry_run: bool = True,
         service_map: Optional[Dict[str, str]] = None,
     ):
-        if not K8S_NAME_REGEX.match(namespace):
+        if not K8S_NAME_REGEX.fullmatch(namespace):
             raise ValueError(f"Invalid Kubernetes namespace name: '{namespace}'")
         self.namespace = namespace
         self.dry_run = dry_run
@@ -49,7 +49,7 @@ class KubectlAdapter:
 
     def _resolve_target_name(self, raw_name: str) -> str:
         name = self.service_map.get(raw_name, raw_name)
-        if not K8S_NAME_REGEX.match(name):
+        if not K8S_NAME_REGEX.fullmatch(name):
             raise ValueError(
                 f"Invalid Kubernetes resource name '{name}' (resolved from '{raw_name}'). "
                 "Must match RFC 1123 DNS subdomain format."

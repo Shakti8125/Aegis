@@ -32,49 +32,7 @@ interface WebSocketContextType {
 
 const WebSocketContext = createContext<WebSocketContextType | null>(null);
 
-// Fallback initial cluster for offline / initial state
-const MOCK_CLUSTER: ClusterSnapshot = {
-  tick: 0,
-  sla_violation_rate: 0,
-  mean_health: 1.0,
-  min_health: 1.0,
-  active_faults: [],
-  services: Array.from({ length: 12 }, (_, i) => ({
-    id: `svc-${i.toString().padStart(2, "0")}`,
-    name: i === 0 ? "svc-00-gateway" : i < 3 ? `svc-${i.toString().padStart(2, "0")}-edge` : i < 8 ? `svc-${i.toString().padStart(2, "0")}-mid` : `svc-${i.toString().padStart(2, "0")}-data`,
-    tier: i === 0 ? "front" : i < 3 ? "edge" : i < 8 ? "mid" : "back",
-    health: 1.0,
-    status: "healthy",
-    cpu_pct: 0.25 + (i * 0.04) % 0.4,
-    mem_pct: 0.35 + (i * 0.05) % 0.3,
-    p99_latency_ms: 12.5 + i * 2.1,
-    error_rate: 0.0,
-    replicas: 2,
-    ready_replicas: 2,
-    isolated: false,
-    sla_violating: false,
-  })),
-  nodes: Array.from({ length: 6 }, (_, j) => ({
-    id: `node-${j}`,
-    name: `node-${j}`,
-    cpu_pct: 0.20 + j * 0.08,
-    mem_pct: 0.30 + j * 0.05,
-    pod_count: 4,
-    pod_capacity: 8,
-    health: 0.95,
-  })),
-  edges: [
-    { source: "svc-00", target: "svc-01", relation: "CALLS", p99_latency_ms: 15.2, error_rate: 0.0, traffic_share: 0.5 },
-    { source: "svc-00", target: "svc-02", relation: "CALLS", p99_latency_ms: 18.0, error_rate: 0.0, traffic_share: 0.5 },
-    { source: "svc-01", target: "svc-03", relation: "CALLS", p99_latency_ms: 22.1, error_rate: 0.0, traffic_share: 0.6 },
-    { source: "svc-01", target: "svc-04", relation: "CALLS", p99_latency_ms: 24.5, error_rate: 0.0, traffic_share: 0.4 },
-    { source: "svc-02", target: "svc-05", relation: "CALLS", p99_latency_ms: 19.8, error_rate: 0.0, traffic_share: 1.0 },
-    { source: "svc-03", target: "svc-08", relation: "CALLS", p99_latency_ms: 35.0, error_rate: 0.0, traffic_share: 0.7 },
-    { source: "svc-04", target: "svc-09", relation: "CALLS", p99_latency_ms: 41.2, error_rate: 0.0, traffic_share: 0.8 },
-    { source: "svc-05", target: "svc-10", relation: "CALLS", p99_latency_ms: 28.9, error_rate: 0.0, traffic_share: 0.9 },
-    { source: "svc-06", target: "svc-11", relation: "CALLS", p99_latency_ms: 32.4, error_rate: 0.0, traffic_share: 1.0 },
-  ],
-};
+
 
 export const WebSocketProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [status, setStatus] = useState<WebSocketContextType["status"]>("connecting");
@@ -100,8 +58,7 @@ export const WebSocketProvider: React.FC<{ children: React.ReactNode }> = ({ chi
 
   const connect = useCallback(() => {
     const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
-    const host = window.location.host || "127.0.0.1:8000";
-    const wsUrl = import.meta.env.VITE_WS_URL || `${protocol}//${host}/ws/live`;
+    const wsUrl = import.meta.env.VITE_WS_URL || `${protocol}//${window.location.host}/ws/live`;
     const socket = new WebSocket(wsUrl);
 
     socket.onopen = () => {

@@ -105,7 +105,19 @@ def run_e2e_demo(steps: int = 20, dry_run: bool = True, auto_confirm: bool = Fal
 
                     # Confirmation gate for live execution
                     if not dry_run and not auto_confirm:
-                        resp = input(f"CONFIRM EXECUTION: Execute {ctx.action_name} on {service_name}? [y/N]: ")
+                        # PROPOSE phase
+                        adapter.dry_run = True
+                        proposal = adapter.execute_action(ctx.action_name, "deployment", service_name)
+                        adapter.dry_run = False
+                        
+                        cmd_str = " ".join(proposal.get("cmd", []))
+                        print(f"\n--- ACTION PROPOSAL ---")
+                        print(f"Agent Action : {ctx.action_name}")
+                        print(f"Target       : {service_name}")
+                        print(f"Command      : {cmd_str}")
+                        print(f"-----------------------")
+                        
+                        resp = input(f"CONFIRM EXECUTION? [y/N]: ")
                         if resp.lower() != "y":
                             logger.warning("Execution cancelled by operator for action on %s.", service_name)
                             continue
