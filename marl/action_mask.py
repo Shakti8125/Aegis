@@ -53,9 +53,8 @@ class MaskedCategorical(Categorical):
 
     def entropy(self) -> torch.Tensor:
         """Compute entropy ignoring zero-probability (masked) actions safely."""
-        p_log_p = self.probs * self.logits
-        # Mask out NaNs or infs arising from masked positions (-1e9 * 0 -> 0)
-        p_log_p = torch.where(torch.isfinite(p_log_p), p_log_p, torch.zeros_like(p_log_p))
+        log_p = torch.log(self.probs.clamp_min(1e-12))
+        p_log_p = torch.where(self.probs > 0, self.probs * log_p, torch.zeros_like(self.probs))
         return -p_log_p.sum(dim=-1)
 
 
@@ -85,7 +84,7 @@ def compute_action_mask_from_obs(
       2: SCALE_UP
       3: SCALE_DOWN
       4: ISOLATE
-      5: RECONNECT
+      5: REROUTE
     """
     if not isinstance(obs, torch.Tensor):
         obs = torch.tensor(obs, dtype=torch.float32)
@@ -93,17 +92,15 @@ def compute_action_mask_from_obs(
     batch_shape = obs.shape[:-1]
     mask = torch.ones((*batch_shape, num_actions), dtype=torch.float32, device=obs.device)
 
-    # In service features (features.py):
-    # index 3: replicas, 4: ready_replicas, 9: isolated
-    if obs.shape[-1] >= 10:
-        replicas = obs[..., 3]
-        isolated = obs[..., 9]
+    # In ClusterEnv vector obs:
+    # index 6: replicas / max_replicas, index 8: isolate_timer / isolate_duration
+    if obs.shape[-1] >= 9:
+        replica_frac = obs[..., 6]
+        isolate_timer = obs[..., 8]
 
-        # Action 3 (SCALE_DOWN): invalid if replicas <= 1
-        mask[..., 3] = torch.where(replicas <= 1.0, 0.0, mask[..., 3])
-        # Action 4 (ISOLATE): invalid if already isolated
-        mask[..., 4] = torch.where(isolated >= 0.5, 0.0, mask[..., 4])
-        # Action 5 (RECONNECT): invalid if not isolated
-        mask[..., 5] = torch.where(isolated < 0.5, 0.0, mask[..., 5])
+        # Action 3 (SCALE_DOWN): invalid if at or below min replicas (replica_frac <= 0.1)
+        mask[..., 3] = torch.where(replica_frac <= 0.1, 0.0, mask[..., 3])
+        # Action 4 (ISOLATE): invalid if already isolating (isolate_timer > 0.0)
+        mask[..., 4] = torch.where(isolate_timer > 0.0, 0.0, mask[..., 4])
 
     return mask

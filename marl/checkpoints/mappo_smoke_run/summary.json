@@ -1,0 +1,12 @@
+{
+  "agent_steps": 2304,
+  "agent_steps_per_sec": 3047.9419843284527,
+  "env_steps": 192,
+  "env_steps_per_sec": 253.9951653607044,
+  "final_checkpoint": "marl\\checkpoints\\mappo_smoke_run\\final.pt",
+  "run_dir": "marl\\checkpoints\\mappo_smoke_run",
+  "scenarios_total": 2,
+  "scenarios_won_on_both": 0,
+  "updates_per_sec": 3.968674458761006,
+  "wall_clock_s": 0.7559199000002081
+}

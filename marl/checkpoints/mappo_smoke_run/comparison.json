@@ -1,0 +1,235 @@
+{
+  "baseline_config": {
+    "enable_isolate": true,
+    "enable_reroute": true,
+    "enable_restart": true,
+    "enable_scale_down": true,
+    "enable_scale_up": true,
+    "isolate_cooldown": 20,
+    "isolate_error": 0.9,
+    "isolate_health": 0.25,
+    "reroute_cooldown": 8,
+    "reroute_downstream_error": 0.1,
+    "restart_cooldown": 5,
+    "restart_down_frac": 0.01,
+    "scale_down_cooldown": 15,
+    "scale_down_health": 0.97,
+    "scale_down_patience": 12,
+    "scale_down_util": 0.25,
+    "scale_up_cooldown": 4,
+    "scale_up_health": 0.92,
+    "scale_up_latency": 0.12,
+    "scale_up_node_pressure": 0.75,
+    "scale_up_util": 0.85
+  },
+  "baseline_tuning_trace": [],
+  "eval_episodes_per_scenario": 3,
+  "eval_wall_clock_s": 1.11670630000026,
+  "reports": [
+    {
+      "action_share": {
+        "isolate": 0.0,
+        "no-op": 0.0,
+        "reroute": 0.0,
+        "restart": 0.4212962962962963,
+        "scale_down": 0.5787037037037037,
+        "scale_up": 0.0
+      },
+      "collapse_rate": 0.0,
+      "controller": "mappo",
+      "episodes": 3,
+      "mean_episode_length": 60.0,
+      "mean_reward_components": {
+        "action_cost": -8.91000047326088,
+        "availability": -178.33914152781168,
+        "invalid_action": -25.966667627294857,
+        "latency": -81.68756530930598,
+        "sla_violation": -424.7059858640035,
+        "terminal": 0.0
+      },
+      "mean_sla_request_ticks": 58.98694403516129,
+      "mean_sla_service_ticks": 707.6666666666666,
+      "mean_total_reward": -719.6093608016769,
+      "mean_ttr": 50.0,
+      "median_ttr": 49.0,
+      "recovery_rate": 0.0,
+      "scenario": "pod_crash",
+      "ttr_censored_frac": 1.0
+    },
+    {
+      "action_share": {
+        "isolate": 0.0,
+        "no-op": 0.983739837398374,
+        "reroute": 0.0,
+        "restart": 0.008130081300813009,
+        "scale_down": 0.0,
+        "scale_up": 0.008130081300813009
+      },
+      "collapse_rate": 0.0,
+      "controller": "baseline",
+      "episodes": 3,
+      "mean_episode_length": 27.333333333333332,
+      "mean_reward_components": {
+        "action_cost": -0.27000001072883606,
+        "availability": -0.7579664414127668,
+        "invalid_action": -0.033333333830038704,
+        "latency": -2.2747250894705453,
+        "sla_violation": 0.0,
+        "terminal": 60.0
+      },
+      "mean_sla_request_ticks": 0.0,
+      "mean_sla_service_ticks": 0.0,
+      "mean_total_reward": 56.663975124557815,
+      "mean_ttr": 17.333333333333332,
+      "median_ttr": 13.0,
+      "recovery_rate": 1.0,
+      "scenario": "pod_crash",
+      "ttr_censored_frac": 0.0
+    },
+    {
+      "action_share": {
+        "isolate": 0.0,
+        "no-op": 1.0,
+        "reroute": 0.0,
+        "restart": 0.0,
+        "scale_down": 0.0,
+        "scale_up": 0.0
+      },
+      "collapse_rate": 0.0,
+      "controller": "no-op",
+      "episodes": 3,
+      "mean_episode_length": 60.0,
+      "mean_reward_components": {
+        "action_cost": 0.0,
+        "availability": -8.64925387253364,
+        "invalid_action": 0.0,
+        "latency": -6.31342334796985,
+        "sla_violation": -8.435283875529421,
+        "terminal": 0.0
+      },
+      "mean_sla_request_ticks": 1.1715670502273194,
+      "mean_sla_service_ticks": 15.333333333333334,
+      "mean_total_reward": -23.397961096032912,
+      "mean_ttr": 50.0,
+      "median_ttr": 49.0,
+      "recovery_rate": 0.0,
+      "scenario": "pod_crash",
+      "ttr_censored_frac": 1.0
+    },
+    {
+      "action_share": {
+        "isolate": 0.0,
+        "no-op": 0.0,
+        "reroute": 0.0,
+        "restart": 0.44212962962962965,
+        "scale_down": 0.5578703703703703,
+        "scale_up": 0.0
+      },
+      "collapse_rate": 0.0,
+      "controller": "mappo",
+      "episodes": 3,
+      "mean_episode_length": 60.0,
+      "mean_reward_components": {
+        "action_cost": -9.150000482797623,
+        "availability": -184.204541126887,
+        "invalid_action": -25.70000135401885,
+        "latency": -83.29554134855668,
+        "sla_violation": -424.8034059206645,
+        "terminal": 0.0
+      },
+      "mean_sla_request_ticks": 59.00047460741674,
+      "mean_sla_service_ticks": 708.0,
+      "mean_total_reward": -727.1534902329246,
+      "mean_ttr": 48.333333333333336,
+      "median_ttr": 47.0,
+      "recovery_rate": 0.0,
+      "scenario": "mixed",
+      "ttr_censored_frac": 1.0
+    },
+    {
+      "action_share": {
+        "isolate": 0.0,
+        "no-op": 0.9635416666666666,
+        "reroute": 0.0,
+        "restart": 0.0013020833333333333,
+        "scale_down": 0.004557291666666667,
+        "scale_up": 0.030598958333333332
+      },
+      "collapse_rate": 0.0,
+      "controller": "baseline",
+      "episodes": 3,
+      "mean_episode_length": 42.666666666666664,
+      "mean_reward_components": {
+        "action_cost": -1.0000000298023224,
+        "availability": -0.981781329959631,
+        "invalid_action": -0.18333333854873976,
+        "latency": -4.859699820478757,
+        "sla_violation": -5.253061751990269,
+        "terminal": 60.0
+      },
+      "mean_sla_request_ticks": 0.729591976540784,
+      "mean_sla_service_ticks": 15.0,
+      "mean_total_reward": 47.72212372922028,
+      "mean_ttr": 24.333333333333332,
+      "median_ttr": 24.0,
+      "recovery_rate": 1.0,
+      "scenario": "mixed",
+      "ttr_censored_frac": 0.0
+    },
+    {
+      "action_share": {
+        "isolate": 0.0,
+        "no-op": 1.0,
+        "reroute": 0.0,
+        "restart": 0.0,
+        "scale_down": 0.0,
+        "scale_up": 0.0
+      },
+      "collapse_rate": 0.0,
+      "controller": "no-op",
+      "episodes": 3,
+      "mean_episode_length": 47.666666666666664,
+      "mean_reward_components": {
+        "action_cost": 0.0,
+        "availability": -4.369022957359751,
+        "invalid_action": 0.0,
+        "latency": -5.754081619282563,
+        "sla_violation": -5.254097314745498,
+        "terminal": 60.0
+      },
+      "mean_sla_request_ticks": 0.7297358047023105,
+      "mean_sla_service_ticks": 15.0,
+      "mean_total_reward": 44.62279810861219,
+      "mean_ttr": 36.0,
+      "median_ttr": 40.0,
+      "recovery_rate": 1.0,
+      "scenario": "mixed",
+      "ttr_censored_frac": 0.0
+    }
+  ],
+  "run_id": "mappo_smoke_run",
+  "scenarios_total": 2,
+  "scenarios_won_on_both": 0,
+  "verdicts": [
+    {
+      "beats_both": false,
+      "beats_sla": false,
+      "beats_ttr": false,
+      "scenario": "pod_crash",
+      "sla_delta": -707.6666666666666,
+      "sla_pct": 0.0,
+      "ttr_delta": -32.66666666666667,
+      "ttr_pct": -188.46153846153848
+    },
+    {
+      "beats_both": false,
+      "beats_sla": false,
+      "beats_ttr": false,
+      "scenario": "mixed",
+      "sla_delta": -693.0,
+      "sla_pct": -4620.0,
+      "ttr_delta": -24.000000000000004,
+      "ttr_pct": -98.6301369863014
+    }
+  ]
+}

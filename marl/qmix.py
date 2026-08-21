@@ -160,7 +160,8 @@ class QMIX(nn.Module):
         """Epsilon-greedy action selection for individual agents."""
         self.eval()
         with torch.no_grad():
-            obs_t = torch.as_tensor(obs, dtype=torch.float32)
+            device = next(self.agent_net.parameters()).device
+            obs_t = torch.as_tensor(obs, dtype=torch.float32, device=device)
             qs = self.agent_net(obs_t)  # (..., N, n_actions)
 
             actions = torch.argmax(qs, dim=-1).cpu().numpy()
@@ -185,6 +186,14 @@ class QMIX(nn.Module):
         """Compute TD loss for joint Q_tot values."""
         b_size = obs.size(0)
 
+        # Support both 1D and 2D per-agent reward tensors
+        if rewards.dim() > 1:
+            rewards = rewards.sum(dim=-1, keepdim=True)
+        else:
+            rewards = rewards.view(b_size, 1)
+
+        dones = dones.view(b_size, 1)
+
         # Current Q-values for chosen actions
         mac_qs = self.agent_net(obs)  # (B, N, n_actions)
         chosen_qs = torch.gather(mac_qs, dim=-1, index=actions.unsqueeze(-1)).squeeze(-1)  # (B, N)
@@ -196,7 +205,7 @@ class QMIX(nn.Module):
             max_next_qs = target_mac_qs.max(dim=-1)[0]  # (B, N)
             target_q_tot = self.target_mixer(max_next_qs, next_states)  # (B, 1)
 
-            y = rewards.view(b_size, 1) + (1.0 - dones.view(b_size, 1)) * self.cfg.gamma * target_q_tot
+            y = rewards + (1.0 - dones) * self.cfg.gamma * target_q_tot
 
         td_error = q_tot - y
         loss = (td_error ** 2).mean()

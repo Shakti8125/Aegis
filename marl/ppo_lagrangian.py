@@ -181,11 +181,12 @@ class PPOLagrangian(nn.Module):
         actions_data = getattr(rollout_buffer, "actions", getattr(rollout_buffer, "action", None))
         logprobs_data = getattr(rollout_buffer, "logprobs", getattr(rollout_buffer, "logprob", None))
 
-        obs_t = torch.as_tensor(rollout_buffer.obs, dtype=torch.float32)
-        state_t = torch.as_tensor(states_data, dtype=torch.float32)
-        actions_t = torch.as_tensor(actions_data, dtype=torch.long)
-        old_logprobs_t = torch.as_tensor(logprobs_data, dtype=torch.float32)
-        tot_adv_t = torch.as_tensor(tot_adv, dtype=torch.float32)
+        device = next(self.actor.parameters()).device
+        obs_t = torch.as_tensor(rollout_buffer.obs, dtype=torch.float32, device=device)
+        state_t = torch.as_tensor(states_data, dtype=torch.float32, device=device)
+        actions_t = torch.as_tensor(actions_data, dtype=torch.long, device=device)
+        old_logprobs_t = torch.as_tensor(logprobs_data, dtype=torch.float32, device=device)
+        tot_adv_t = torch.as_tensor(tot_adv, dtype=torch.float32, device=device)
 
         act_feats = self.encoder.actor_features(obs_t)
         crit_feats = self.encoder.critic_features(state_t)
@@ -210,9 +211,9 @@ class PPOLagrangian(nn.Module):
         sla_val = self.sla_cost_critic(crit_feats).squeeze(-1)
         act_val = self.action_cost_critic(crit_feats).squeeze(-1)
 
-        loss_rew_val = nn.MSELoss()(rew_val, torch.as_tensor(reward_returns, dtype=torch.float32))
-        loss_sla_val = nn.MSELoss()(sla_val, torch.as_tensor(sla_returns, dtype=torch.float32))
-        loss_act_val = nn.MSELoss()(act_val, torch.as_tensor(action_cost_returns, dtype=torch.float32))
+        loss_rew_val = nn.MSELoss()(rew_val, torch.as_tensor(reward_returns, dtype=torch.float32, device=device))
+        loss_sla_val = nn.MSELoss()(sla_val, torch.as_tensor(sla_returns, dtype=torch.float32, device=device))
+        loss_act_val = nn.MSELoss()(act_val, torch.as_tensor(action_cost_returns, dtype=torch.float32, device=device))
 
         critic_loss = loss_rew_val + loss_sla_val + loss_act_val
 

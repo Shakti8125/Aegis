@@ -49,12 +49,12 @@ def test_action_masking_logits_and_distribution():
 
     # Precondition masking test
     obs = torch.zeros(1, 12, 38)
-    obs[0, 0, 3] = 1.0  # replicas = 1 -> action 3 (scale down) forbidden
-    obs[0, 0, 9] = 1.0  # isolated = 1 -> action 4 (isolate) forbidden, action 5 (reconnect) valid
+    obs[0, 0, 6] = 0.1  # replica_frac <= 0.1 (replicas = 1) -> action 3 (scale down) forbidden
+    obs[0, 0, 8] = 1.0  # isolate_timer > 0.0 -> action 4 (isolate) forbidden
     computed_mask = compute_action_mask_from_obs(obs)
     assert computed_mask[0, 0, 3] == 0.0
     assert computed_mask[0, 0, 4] == 0.0
-    assert computed_mask[0, 0, 5] == 1.0
+    assert computed_mask[0, 0, 5] == 1.0  # Action 5 (reroute) remains valid
 
 
 # 2. Test HGT Encoder
@@ -227,3 +227,40 @@ def test_decision_transformer_forward_and_action():
 
     sampled_act = dt.get_action(states, actions, returns_to_go, timesteps)
     assert sampled_act.shape == (b_size,)
+
+
+# 8. Test Action Mask Entropy Numerical Correctness & Invariance
+def test_action_mask_entropy_exact():
+    # Distribution with 2 unmasked equal logits out of 6 should have entropy == ln(2)
+    logits = torch.tensor([[5.0, 5.0, -100.0, -100.0, -100.0, -100.0]])
+    mask = torch.tensor([[1.0, 1.0, 0.0, 0.0, 0.0, 0.0]])
+    dist = MaskedCategorical(logits=logits, mask=mask)
+    expected_entropy = np.log(2.0)
+    assert dist.entropy().item() == pytest.approx(expected_entropy, abs=1e-5)
+
+    # 1 valid action should have 0 entropy
+    mask_single = torch.tensor([[1.0, 0.0, 0.0, 0.0, 0.0, 0.0]])
+    dist_single = MaskedCategorical(logits=logits, mask=mask_single)
+    assert dist_single.entropy().item() == pytest.approx(0.0, abs=1e-6)
+
+
+# 9. Test QMIX 2D Per-Agent Reward Compatibility & Act
+def test_qmix_2d_rewards_and_act():
+    qmix = QMIX(obs_dim=16, state_dim=32, n_agents=4, n_actions=6)
+    obs = torch.randn(8, 4, 16)
+    state = torch.randn(8, 32)
+    actions = torch.randint(0, 6, (8, 4))
+    next_obs = torch.randn(8, 4, 16)
+    next_state = torch.randn(8, 32)
+    dones = torch.zeros(8)
+
+    # 2D per-agent rewards (8, 4)
+    rewards_2d = torch.randn(8, 4)
+    loss_2d = qmix.compute_loss(obs, state, actions, rewards_2d, next_obs, next_state, dones)
+    assert torch.isfinite(loss_2d)
+
+    # Act method test
+    actions_sampled = qmix.act(obs.numpy())
+    assert actions_sampled.shape == (8, 4)
+    assert (actions_sampled >= 0).all() and (actions_sampled < 6).all()
+
